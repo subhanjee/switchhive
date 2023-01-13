@@ -1,0 +1,31 @@
+export const colors = {
+  primary: '#FC5C65',
+  secondary: '#4ECDC4',
+  black: '#000',
+  white: '#fff',
+  medium: '#6E6969',
+  light: '#F8F4F4',
+  dark: '#0C0C0C',
+  danger: '#FF5252',
+  yellow: '#FFE66D',
+  blue: '#4ECDC4',
+  lightBlue: '#F8F4F4',
+  darkBlue: '#0C0C0C',
+  darkGrey: '#0C0C0C',
+  lightGrey: '#F8F4F4',
+  mediumGrey: '#6E6969',
+  //   tomato
+  tomato: '#FF6347',
+  // Pink
+  pink: '#FC5C65',
+  lightPink: '#FFE4E6',
+  darkPink: '#B83240',
+  // Orange
+  orange: '#F57C00',
+  lightOrange: '#FFF3E0',
+  darkOrange: '#BF360C',
+  // Green
+  green: '#43A047',
+  lightGreen: '#E8F5E9',
+  darkGreen: '#1B5E20',
+};
