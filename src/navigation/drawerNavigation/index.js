@@ -1,9 +1,10 @@
-import {Animated, Dimensions, Easing} from 'react-native';
-
 import React from 'react';
+import {Dimensions} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-
-import HomeStack from '../stackNavigation/homeStack';
+import TopUp from '../../components/topUp';
+import SwitchHiveCard from '../../components/switchHiveCard';
+import GiftCard from '../../components/giftsCard';
+import Promotions from '../../components/promotions';
 const {width} = Dimensions.get('screen');
 
 const Drawer = createDrawerNavigator();
@@ -12,7 +13,6 @@ export default function AppStack(props) {
   return (
     <Drawer.Navigator
       style={{flex: 1}}
-      // drawerContent={props => <CustomDrawerContent {...props} />}
       drawerStyle={{
         backgroundColor: 'white',
         width: width * 0.8,
@@ -37,10 +37,31 @@ export default function AppStack(props) {
           fontWeight: 'normal',
         },
       }}
-      initialRouteName="Home">
+      initialRouteName="TopUp">
       <Drawer.Screen
-        name="Home"
-        component={HomeStack}
+        name="TopUp"
+        component={TopUp}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="SwitchHiveCard"
+        component={SwitchHiveCard}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="GiftCard"
+        component={GiftCard}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Promotions"
+        component={Promotions}
         options={{
           headerShown: false,
         }}

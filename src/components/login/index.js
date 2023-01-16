@@ -4,7 +4,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 
