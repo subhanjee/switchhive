@@ -29,7 +29,9 @@ function LoginTwo() {
             <Text style={styles.forgettext}>Forget your Password</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.logincir}>
+        <TouchableOpacity
+          style={styles.logincir}
+          onPress={() => navigation.navigate('App')}>
           <Text style={styles.blackcolor}>Login</Text>
         </TouchableOpacity>
 
