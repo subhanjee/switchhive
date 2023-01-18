@@ -11,24 +11,25 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-
+import {useNavigation} from '@react-navigation/native';
 import data from '../../helper/data.json';
-import TopUpCard from '../TopUpCard';
-function TopUp() {
+import SwitchiveCard from '../switchiveCards';
+function Gifts() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
         <View>
-          <Text style={styles.topuptext}>Top Up Cards</Text>
+          <Text style={styles.topuptext}>GiftCards</Text>
           <Text style={styles.topuptext1}>
-            Ready to use online or in-store. Buy Top Up with Bitcoin, Ether,
+            Ready to use online or in-store. Buy Gift Cards with Bitcoin, Ether,
             Tether, and more.
           </Text>
           <SafeAreaView>
             <FlatList
               data={data}
-              keyExtractor={data => data.id}
-              renderItem={({item}) => <TopUpCard item={item} />}
+              keyExtractor={data => data.name}
+              renderItem={({item}) => <SwitchiveCard item={item} />}
             />
           </SafeAreaView>
         </View>
@@ -60,4 +61,4 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-export default TopUp;
+export default Gifts;

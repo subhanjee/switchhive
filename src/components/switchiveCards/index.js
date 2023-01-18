@@ -2,22 +2,16 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Jazz from '../../assets/images/jazz.png';
-import {useNavigation} from '@react-navigation/native';
-import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
-function TopUpCard({item}) {
-  const navigation = useNavigation();
+
+function SwitchiveCard() {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.bgcolor}
-        onPress={() =>
-          navigation.navigate('TopUpCards', {id: item.operatorId})
-        }>
+      <TouchableOpacity style={styles.bgcolor}>
         <TouchableOpacity>
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image source={Jazz} />
+          <Image source={Jazz} style={styles.star} />
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>Jazz Pakistan</Text>
             <Text style={styles.greycolor1}>Variation type RANGE</Text>
@@ -77,4 +71,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-export default TopUpCard;
+export default SwitchiveCard;
