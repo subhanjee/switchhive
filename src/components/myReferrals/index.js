@@ -11,24 +11,18 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-
 import data from '../../helper/data.json';
-import TopUpCard from '../TopUpCard';
-function TopUp() {
+import MyRerralsCards from '../myReferralsCards';
+function MyReferrals() {
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
         <View>
-          <Text style={styles.topuptext}>Top Up Cards</Text>
-          <Text style={styles.topuptext1}>
-            Ready to use online or in-store. Buy Top Up with Bitcoin, Ether,
-            Tether, and more.
-          </Text>
           <SafeAreaView>
             <FlatList
               data={data}
               keyExtractor={data => data.id}
-              renderItem={({item}) => <TopUpCard item={item} />}
+              renderItem={({item}) => <MyRerralsCards item={item} />}
             />
           </SafeAreaView>
         </View>
@@ -40,24 +34,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   textWrapper22: {
-    height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    // height: hp('80%'), // 70% of height device screen
+    width: '100%', // 80% of width device screen
   },
-  topuptext: {
-    fontSize: hp('3'),
+  wallettext: {
+    fontSize: hp('2.5'),
     color: '#000',
-    marginBottom: hp('2'),
+    marginBottom: hp('1'),
     color: 'black',
     fontWeight: '500',
     textAlign: 'center',
     marginTop: hp('2'),
   },
-  topuptext1: {
-    fontSize: hp('2.5'),
-    color: '#8B8B8B',
-    fontWeight: '500',
-    textAlign: 'center',
+  dropdown4BtnStyle44: {
+    width: wp('30%'),
+    height: hp('6'),
+    borderRadius: 5,
+    marginLeft: hp('1'),
+    marginTop: hp('2'),
+    backgroundColor: 'red',
+    alignSelf: 'flex-end',
   },
+  dropdown4BtnTxtStyle: {color: 'white', textAlign: 'left'},
+  dropdown4DropdownStyle: {backgroundColor: '#EFEFEF'},
+  dropdown4RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
+  dropdown4RowTxtStyle: {color: '#444', textAlign: 'left'},
 });
-export default TopUp;
+export default MyReferrals;

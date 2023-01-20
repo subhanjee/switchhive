@@ -11,11 +11,10 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+
 import data from '../../helper/data.json';
 import SwitchiveCard from '../switchiveCards';
 function Switchive() {
-  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
@@ -48,18 +47,20 @@ const styles = StyleSheet.create({
     width: wp('100%'), // 80% of width device screen
   },
   topuptext: {
-    fontSize: 20,
+    fontSize: hp('3'),
     color: '#000',
-    marginBottom: 10,
+    marginBottom: hp('3'),
     color: 'black',
     fontWeight: '500',
-    marginLeft: 5,
+    marginBottom: hp('2'),
+    textAlign: 'center',
   },
   topuptext1: {
-    fontSize: 15,
-    color: '#8B8B8B',
+    fontSize: hp('2'),
+    marginBottom: hp('3'),
     fontWeight: '500',
-    marginLeft: 5,
+    marginBottom: hp('2'),
+    textAlign: 'center',
   },
 });
 export default Switchive;

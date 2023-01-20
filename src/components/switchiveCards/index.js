@@ -2,11 +2,16 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Jazz from '../../assets/images/jazz.png';
-
-function SwitchiveCard() {
+import {useNavigation} from '@react-navigation/native';
+function SwitchiveCard(item) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.bgcolor}>
+      <TouchableOpacity
+        style={styles.bgcolor}
+        onPress={() =>
+          navigation.navigate('SwitHiveCards', {id: item.operatorId})
+        }>
         <TouchableOpacity>
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>

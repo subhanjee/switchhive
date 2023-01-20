@@ -5,6 +5,13 @@ import TopUp from '../../components/topUp';
 import SwitchHiveCard from '../../components/switcHive';
 import GiftCard from '../../components/gifts';
 import Promotions from '../../components/promotions';
+import PayBills from '../../components/payBills';
+import ProfileScreen from '../../screens/profileScreen';
+import WishList from '../../components/wishlist';
+import MyOrders from '../../components/myOrders';
+import Wallet from '../../components/wallet';
+import RedeemCoupon from '../../components/redeemCoupon';
+import MyReferrals from '../../components/myReferrals';
 const {width} = Dimensions.get('screen');
 
 const Drawer = createDrawerNavigator();
@@ -68,6 +75,69 @@ export default function AppStack(props) {
       <Drawer.Screen
         name="Promotions"
         component={Promotions}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="PayBills"
+        component={PayBills}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="WishList"
+        component={WishList}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="My Orders"
+        component={MyOrders}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="Wallet"
+        component={Wallet}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="RedeemCoupon"
+        component={RedeemCoupon}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="MyReferrals"
+        component={MyReferrals}
         options={
           {
             // headerShown: false,

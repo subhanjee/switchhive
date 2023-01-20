@@ -11,24 +11,19 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-
 import data from '../../helper/data.json';
-import TopUpCard from '../TopUpCard';
-function TopUp() {
+import WishListCards from '../wishlistcards';
+function WishList() {
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
         <View>
-          <Text style={styles.topuptext}>Top Up Cards</Text>
-          <Text style={styles.topuptext1}>
-            Ready to use online or in-store. Buy Top Up with Bitcoin, Ether,
-            Tether, and more.
-          </Text>
+          <Text style={styles.topuptext}>WishList Cards</Text>
           <SafeAreaView>
             <FlatList
               data={data}
               keyExtractor={data => data.id}
-              renderItem={({item}) => <TopUpCard item={item} />}
+              renderItem={({item}) => <WishListCards item={item} />}
             />
           </SafeAreaView>
         </View>
@@ -40,9 +35,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    width: '100%', // 80% of width device screen
   },
   topuptext: {
     fontSize: hp('3'),
@@ -60,4 +56,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default TopUp;
+export default WishList;

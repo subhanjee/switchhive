@@ -1,29 +1,31 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Jazz from '../../assets/images/jazz.png';
+import PUBG from '../../assets/images/pubg.jpg';
 import {useNavigation} from '@react-navigation/native';
-function TopUpCard({item}) {
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+function WishListCards({item}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.bgcolor}
+        style={styles.bgcolor22}
         onPress={() =>
           navigation.navigate('TopUpCards', {id: item.operatorId})
         }>
         <TouchableOpacity>
-          <Icon name="heart" style={styles.icon} />
+          <Icon name="close" style={styles.icon} />
         </TouchableOpacity>
-        <View style={styles.topupcard}>
-          <Image source={Jazz} />
-          <View style={styles.marginleft}>
-            <Text style={styles.greycolor}>Jazz Pakistan</Text>
-            <Text style={styles.greycolor1}>Variation type RANGE</Text>
-            <Text style={styles.greycolor2}>PKR 165.00 - 4950.00</Text>
-            <Text style={styles.redcolor}>Featured</Text>
+        <View style={styles.pubgcard}>
+          <Image source={PUBG} style={styles.pubg} />
+          <View style={styles.punbgmarginleft}>
+            <Text style={styles.pubggreycolor}>PUBG Mobile 60 UC PK</Text>
           </View>
         </View>
+        <Text style={styles.pubggreycolor1}>$0.99 - $0.99</Text>
       </TouchableOpacity>
     </View>
   );
@@ -31,19 +33,23 @@ function TopUpCard({item}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: wp('2'),
+    paddingVertical: hp('1'),
   },
-  topupcard: {
+  pubgcard: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 3,
-    padding: 10,
-    elevation: 3,
-    marginTop: -15,
+    marginBottom: hp('1'),
   },
-
-  bgcolor: {
+  pubg: {
+    width: 120,
+    height: 80,
+  },
+  bgcolor22: {
     backgroundColor: 'white',
+    padding: hp('1'),
+    elevation: 5,
+    borderRadius: 5,
   },
   icon: {
     color: '#EC2027',
@@ -52,18 +58,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 20,
   },
-  greycolor: {
+  pubggreycolor: {
     color: '#000',
     fontSize: 16,
     fontWeight: '500',
   },
-  greycolor1: {
+  pubggreycolor1: {
     color: '#000',
     fontSize: 13,
     fontWeight: '400',
+    textAlign: 'right',
+    marginBottom: hp('1'),
   },
-  marginleft: {
-    marginLeft: 12,
+  punbgmarginleft: {
+    marginLeft: wp('3'),
   },
   greycolor2: {
     color: '#8d8c8c',
@@ -76,4 +84,4 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
-export default TopUpCard;
+export default WishListCards;

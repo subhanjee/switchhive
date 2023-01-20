@@ -26,7 +26,8 @@ const countriesWithFlags = [
   {title: 'England'},
   {title: 'Dubai'},
 ];
-function TopUpCardsScreen() {
+const USD = [{title: 'Usd'}, {title: 'Ustd'}];
+function GiftCardsScreen() {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -43,20 +44,35 @@ function TopUpCardsScreen() {
             Litecoin, Dash. Instant email, delivery. No account required. Start
             living on crypto!
           </Text>
-          <Text style={styles.color2}>Suggested Amounts</Text>
-          <View style={styles.redboxrow}>
-            <TouchableOpacity style={styles.redbox}>
-              <Text style={styles.whitetext}>1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.redbox}>
-              <Text style={styles.whitetext}>1</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.color2}>Select Package</Text>
           <View style={styles.row}>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              maxLength={10} //setting limit of input
+            <SelectDropdown
+              data={USD}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              defaultButtonText={'Usd'}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem.title;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.title;
+              }}
+              buttonStyle={styles.dropdown4BtnStyle2}
+              buttonTextStyle={styles.dropdown4BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return (
+                  <FontAwesome
+                    name={isOpened ? 'chevron-up' : 'chevron-down'}
+                    color={'#444'}
+                    size={10}
+                  />
+                );
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.dropdown4DropdownStyle}
+              rowStyle={styles.dropdown4RowStyle}
+              rowTextStyle={styles.dropdown4RowTxtStyle}
             />
 
             <SelectDropdown
@@ -104,8 +120,11 @@ function TopUpCardsScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.hairline} />
-        <Text style={styles.color1}>Description</Text>
+        <Text style={styles.color1}>
+          Redeem the Free Fire code online at https://shop.garena.sg/app
+        </Text>
         <View style={styles.hairline} />
+        <Text style={styles.color1}>Description</Text>
         <Text style={styles.color1}>
           Nufferton was founded in 2016 on one simple idea: to create a
           contemporary version of the nearly forgotten, but amazing pyjamas,
@@ -232,9 +251,17 @@ const styles = StyleSheet.create({
     marginRight: hp('2'),
     marginTop: hp('1'),
   },
+  dropdown4BtnStyle2: {
+    width: wp('40%'),
+    height: hp('6'),
+    borderRadius: 5,
+    marginRight: hp('2'),
+    marginTop: hp('1'),
+    borderWidth: 1,
+  },
   dropdown4BtnTxtStyle: {color: '#444', textAlign: 'left'},
   dropdown4DropdownStyle: {backgroundColor: '#EFEFEF'},
   dropdown4RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown4RowTxtStyle: {color: '#444', textAlign: 'left'},
 });
-export default TopUpCardsScreen;
+export default GiftCardsScreen;

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import data from '../../helper/data.json';
-import SwitchiveCard from '../switchiveCards';
+import GiftsCard from '../giftsCards';
 function Gifts() {
   const navigation = useNavigation();
   return (
@@ -29,7 +29,7 @@ function Gifts() {
             <FlatList
               data={data}
               keyExtractor={data => data.name}
-              renderItem={({item}) => <SwitchiveCard item={item} />}
+              renderItem={({item}) => <GiftsCard item={item} />}
             />
           </SafeAreaView>
         </View>
@@ -47,18 +47,19 @@ const styles = StyleSheet.create({
     width: wp('100%'), // 80% of width device screen
   },
   topuptext: {
-    fontSize: 20,
+    fontSize: hp('3'),
     color: '#000',
-    marginBottom: 10,
+    marginTop: hp('1'),
+    marginBottom: hp('1'),
     color: 'black',
     fontWeight: '500',
-    marginLeft: 5,
+    textAlign: 'center',
   },
   topuptext1: {
-    fontSize: 15,
+    fontSize: hp('2.5'),
     color: '#8B8B8B',
     fontWeight: '500',
-    marginLeft: 5,
+    textAlign: 'center',
   },
 });
 export default Gifts;
