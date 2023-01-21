@@ -1,4 +1,4 @@
-package com.switchhive.newarchitecture;
+package com.switcHive.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.switchhive.BuildConfig;
-import com.switchhive.newarchitecture.components.MainComponentsRegistry;
-import com.switchhive.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.switcHive.BuildConfig;
+import com.switcHive.newarchitecture.components.MainComponentsRegistry;
+import com.switcHive.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

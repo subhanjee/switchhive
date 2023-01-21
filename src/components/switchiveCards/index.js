@@ -3,25 +3,29 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Jazz from '../../assets/images/jazz.png';
 import {useNavigation} from '@react-navigation/native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 function SwitchiveCard(item) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.bgcolor}
+        style={styles.switchbgcolor}
         onPress={() =>
           navigation.navigate('SwitHiveCards', {id: item.operatorId})
         }>
         <TouchableOpacity>
-          <Icon name="heart" style={styles.icon} />
+          <Icon name="heart" style={styles.switchicon} />
         </TouchableOpacity>
-        <View style={styles.topupcard}>
+        <View style={styles.switchcard}>
           <Image source={Jazz} style={styles.star} />
-          <View style={styles.marginleft}>
-            <Text style={styles.greycolor}>Jazz Pakistan</Text>
-            <Text style={styles.greycolor1}>Variation type RANGE</Text>
-            <Text style={styles.greycolor2}>PKR 165.00 - 4950.00</Text>
-            <Text style={styles.redcolor}>Featured</Text>
+          <View style={styles.switchmarginleft}>
+            <Text style={styles.switchgreycolor}>Jazz Pakistan</Text>
+            <Text style={styles.switchgreycolor1}>Variation type RANGE</Text>
+            <Text style={styles.switchgreycolor2}>PKR 165.00 - 4950.00</Text>
+            <Text style={styles.switchredcolor}>Featured</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -31,49 +35,47 @@ function SwitchiveCard(item) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: wp('4'),
+    paddingVertical: hp('1'),
   },
-  topupcard: {
+  switchcard: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 3,
-    padding: 10,
-    elevation: 3,
-    marginTop: -15,
+    marginTop: hp('-3'),
   },
-
-  bgcolor: {
+  switchbgcolor: {
     backgroundColor: 'white',
+    elevation: 3,
+    padding: hp('2'),
+    marginTop: hp('2'),
   },
-  icon: {
+  switchicon: {
     color: '#EC2027',
     alignSelf: 'flex-end',
-    marginRight: 10,
-    marginTop: 5,
-    fontSize: 20,
+    fontSize: hp('3'),
   },
-  greycolor: {
+  switchgreycolor: {
     color: '#000',
-    fontSize: 16,
+    fontSize: hp('2.5'),
+    fontWeight: '700',
+  },
+  switchgreycolor1: {
+    color: '#000',
+    fontSize: hp('2'),
     fontWeight: '500',
   },
-  greycolor1: {
-    color: '#000',
-    fontSize: 13,
-    fontWeight: '400',
+  switchmarginleft: {
+    marginLeft: wp('3'),
   },
-  marginleft: {
-    marginLeft: 12,
-  },
-  greycolor2: {
+  switchgreycolor2: {
     color: '#8d8c8c',
-    fontSize: 12,
+    fontSize: hp('1.8'),
     fontWeight: '500',
   },
-  redcolor: {
+  switchredcolor: {
     color: '#ec2027',
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: hp('2'),
+    fontWeight: '600',
   },
 });
 export default SwitchiveCard;

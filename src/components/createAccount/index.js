@@ -6,6 +6,7 @@ import {
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import COLOR from '../../config/constant';
 
 function CreateAccount() {
   const navigation = useNavigation();
@@ -18,19 +19,19 @@ function CreateAccount() {
             Get rewards on every purchase and much more!
           </Text>
           <View>
-            <TextInput style={styles.input} placeholder="Name" />
-            <TextInput style={styles.input} placeholder="Email" />
+            <TextInput style={styles.createinput} placeholder="Name" />
+            <TextInput style={styles.createinput} placeholder="Email" />
             <TextInput
-              style={styles.input}
+              style={styles.createinput}
               placeholder="Password"
               secureTextEntry
               right={<TextInput.Icon icon="eye" />}
             />
-            <TextInput style={styles.input} placeholder="Referral Code" />
+            <TextInput style={styles.createinput} placeholder="Referral Code" />
           </View>
         </View>
         <TouchableOpacity
-          style={styles.logincir2}
+          style={styles.createbtn}
           onPress={() => navigation.navigate('main')}>
           <Text style={styles.whitecolor}>Register</Text>
         </TouchableOpacity>
@@ -41,35 +42,26 @@ function CreateAccount() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   textWrapper: {
-    height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    height: hp('90%'), // 70% of height device screen
+    width: '100%', // 80% of width device screen
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   logintext: {
-    fontSize: 25,
+    fontSize: hp('4'),
     color: '#222222',
-    marginBottom: 10,
+    marginBottom: hp('2'),
     textAlign: 'center',
-    color: 'black',
+    fontWeight: '700',
   },
   whitecolor: {
-    fontSize: 15,
-    color: 'white',
+    fontSize: hp('2.5'),
+    color: COLOR.WHITE,
     textAlign: 'center',
-  },
-  forgettext: {
-    margin: 12,
-    fontSize: 15,
-    color: 'black',
-    textAlign: 'right',
-    marginTop: -5,
+    fontWeight: '800',
   },
   logintext1: {
     fontSize: 16,
@@ -78,38 +70,20 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     textAlign: 'center',
   },
-  logintext22: {
-    fontSize: 12,
-    color: '#343434',
-    fontWeight: 'bold',
-  },
-  logincir2: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
-    width: '50%',
-    padding: 10,
+  createbtn: {
     borderRadius: 50,
     backgroundColor: '#EC2027',
-    marginTop: 20,
-    marginBottom: 15,
+    paddingLeft: wp('15'),
+    paddingRight: wp('15'),
+    paddingTop: hp('2'),
+    paddingBottom: hp('2'),
+    marginTop: hp('4'),
+    marginBottom: hp('2'),
   },
-
-  logintext33: {
-    fontSize: 15,
-    color: '#222222',
-    textAlign: 'center',
-  },
-  logintext44: {
-    fontSize: 15,
-    color: '#F6762D',
-    textAlign: 'center',
-  },
-  input: {
-    fontSize: 20,
-    margin: 10,
-    borderRadius: 5,
+  createinput: {
+    fontSize: hp('3'),
     backgroundColor: '#F0F2F5',
+    marginTop: hp('2'),
   },
 });
 export default CreateAccount;

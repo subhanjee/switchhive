@@ -75,9 +75,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   textWrapper22: {
-    // height: hp('80%'), // 70% of height device screen
+    height: hp('58%'), // 70% of height device screen
     width: '100%', // 80% of width device screen
   },
   wallettext: {

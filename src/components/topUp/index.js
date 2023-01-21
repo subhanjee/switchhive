@@ -11,7 +11,6 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-
 import data from '../../helper/data.json';
 import TopUpCard from '../TopUpCard';
 function TopUp() {
@@ -42,13 +41,12 @@ const styles = StyleSheet.create({
   },
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    width: '100%', // 80% of width device screen
   },
   topuptext: {
     fontSize: hp('3'),
     color: '#000',
     marginBottom: hp('2'),
-    color: 'black',
     fontWeight: '500',
     textAlign: 'center',
     marginTop: hp('2'),

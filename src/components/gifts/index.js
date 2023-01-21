@@ -41,10 +41,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    width: '100%', // 80% of width device screen
   },
   topuptext: {
     fontSize: hp('3'),

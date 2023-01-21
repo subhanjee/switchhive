@@ -1,4 +1,4 @@
-package com.switchhive.newarchitecture.components;
+package com.switcHive.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

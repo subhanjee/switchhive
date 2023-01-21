@@ -19,7 +19,7 @@ function Switchive() {
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
         <View>
-          <Text style={styles.topuptext}>SwitchiveCard</Text>
+          <Text style={styles.topuptext}>SwitcHiveCard</Text>
           <Text style={styles.topuptext1}>
             Purchase the Switchive gift card for instant checkout while
             shopping, balance top up or gift your loved ones to shop for their
@@ -41,10 +41,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    width: '100%', // 80% of width device screen
   },
   topuptext: {
     fontSize: hp('3'),
@@ -56,11 +55,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   topuptext1: {
-    fontSize: hp('2'),
+    fontSize: hp('2.3'),
     marginBottom: hp('3'),
     fontWeight: '500',
     marginBottom: hp('2'),
     textAlign: 'center',
+    paddingHorizontal: wp('4'),
   },
 });
 export default Switchive;

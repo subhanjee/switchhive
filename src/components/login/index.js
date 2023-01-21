@@ -6,6 +6,7 @@ import {
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import COLOR from '../../config/constant';
 
 function LoginTwo() {
   const navigation = useNavigation();
@@ -33,7 +34,6 @@ function LoginTwo() {
           onPress={() => navigation.navigate('App')}>
           <Text style={styles.blackcolor}>Login</Text>
         </TouchableOpacity>
-
         <View style={styles.dontview}>
           <Text style={styles.logintext33}>
             No account? You can
@@ -52,75 +52,67 @@ function LoginTwo() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   textWrapper: {
-    height: hp('80%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    height: hp('90%'), // 70% of height device screen
+    width: '100%', // 80% of width device screen
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   logintext: {
-    fontSize: 25,
+    fontSize: hp('4'),
     color: '#222222',
-    marginBottom: 10,
+    marginBottom: hp('2'),
     textAlign: 'center',
-    color: 'black',
+    color: COLOR.BLACK,
+    fontWeight: '700',
   },
   blackcolor: {
-    fontSize: 15,
-    color: 'black',
+    fontSize: hp('2.5'),
+    color: COLOR.BLACK,
     textAlign: 'center',
+    fontWeight: '600',
   },
   forgettext: {
-    margin: 12,
-    fontSize: 15,
-    color: 'black',
+    fontSize: hp('2.3'),
+    color: COLOR.BLACK,
     textAlign: 'right',
-    marginTop: -5,
+    fontWeight: '600',
+    marginTop: hp('.5'),
   },
   logintext1: {
-    fontSize: 16,
+    fontSize: hp('3'),
     color: '#8B8B8B',
     fontWeight: '500',
-    lineHeight: 16,
     textAlign: 'center',
-  },
-  logintext22: {
-    fontSize: 12,
-    color: '#343434',
-    fontWeight: 'bold',
   },
   logincir: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
-    width: '50%',
-    padding: 10,
     borderRadius: 50,
     backgroundColor: '#FBCC0E',
-    marginTop: 20,
-    marginBottom: 15,
+    paddingLeft: wp('15'),
+    paddingRight: wp('15'),
+    paddingTop: hp('2'),
+    paddingBottom: hp('2'),
+    marginTop: hp('4'),
+    marginBottom: hp('2'),
   },
-
   logintext33: {
-    fontSize: 15,
+    fontSize: hp('2'),
     color: '#222222',
     textAlign: 'center',
+    fontWeight: '500',
   },
   logintext44: {
-    fontSize: 15,
+    fontSize: hp('2'),
     color: '#F6762D',
     textAlign: 'center',
+    fontWeight: '500',
   },
   input: {
-    fontSize: 20,
-    margin: 10,
-    borderRadius: 5,
+    fontSize: hp('3'),
     backgroundColor: '#F0F2F5',
+    marginTop: hp('2'),
   },
 });
 export default LoginTwo;

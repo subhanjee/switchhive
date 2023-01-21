@@ -3,6 +3,10 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Jazz from '../../assets/images/jazz.png';
 import {useNavigation} from '@react-navigation/native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 function GiftsCard(item) {
   const navigation = useNavigation();
   return (
@@ -29,49 +33,47 @@ function GiftsCard(item) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: wp('4'),
+    paddingVertical: hp('1'),
   },
   topupcard: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 3,
-    padding: 10,
-    elevation: 3,
-    marginTop: -15,
+    marginTop: hp('-3'),
   },
-
   bgcolor: {
     backgroundColor: 'white',
+    elevation: 3,
+    padding: hp('2'),
+    marginTop: hp('2'),
   },
   icon: {
     color: '#EC2027',
     alignSelf: 'flex-end',
-    marginRight: 10,
-    marginTop: 5,
-    fontSize: 20,
+    fontSize: hp('3'),
   },
   greycolor: {
     color: '#000',
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: hp('2.5'),
+    fontWeight: '700',
   },
   greycolor1: {
     color: '#000',
-    fontSize: 13,
-    fontWeight: '400',
+    fontSize: hp('2'),
+    fontWeight: '500',
   },
   marginleft: {
-    marginLeft: 12,
+    marginLeft: wp('3'),
   },
   greycolor2: {
     color: '#8d8c8c',
-    fontSize: 12,
+    fontSize: hp('1.8'),
     fontWeight: '500',
   },
   redcolor: {
     color: '#ec2027',
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: hp('2'),
+    fontWeight: '600',
   },
 });
 export default GiftsCard;
