@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import Profile1 from '../../assets/images/person-profile-image-icon.webp';
+// import Profile1 from '../../assets/images/person-profile-image-icon.webp';
 import {useNavigation} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -21,7 +21,7 @@ function MyRerralsCards({item}) {
           navigation.navigate('TopUpCards', {id: item.operatorId})
         }>
         <View style={styles.referralcard}>
-          <Image source={Profile1} style={styles.pubg} />
+          {/* <Image source={Profile1} style={styles.pubg} /> */}
           <View style={styles.referralmarginleft}>
             <Text style={styles.referralgreycolor}>GUEST</Text>
             <Text style={styles.referralgreycolor1}>guest@gmail.com</Text>

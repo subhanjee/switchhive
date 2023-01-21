@@ -12,6 +12,7 @@ import MyOrders from '../../components/myOrders';
 import Wallet from '../../components/wallet';
 import RedeemCoupon from '../../components/redeemCoupon';
 import MyReferrals from '../../components/myReferrals';
+import SettingScreen from '../../screens/settingScreen';
 const {width} = Dimensions.get('screen');
 
 const Drawer = createDrawerNavigator();
@@ -64,7 +65,7 @@ export default function AppStack(props) {
         }
       />
       <Drawer.Screen
-        name="SwitchHiveCard"
+        name="Switc Hive Card"
         component={SwitchHiveCard}
         options={
           {
@@ -136,8 +137,17 @@ export default function AppStack(props) {
         }
       />
       <Drawer.Screen
-        name="MyReferrals"
+        name="My Referrals"
         component={MyReferrals}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="Setting"
+        component={SettingScreen}
         options={
           {
             // headerShown: false,

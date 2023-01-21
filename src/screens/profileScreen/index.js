@@ -18,7 +18,7 @@ import COLORS from '../../config/constant';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
-import Profile from '../../assets/images/person-profile-image-icon.webp';
+// import Profile from '../../assets/images/person-profile-image-icon.webp';
 
 const countriesWithFlags = [{title: 'EUR'}, {title: 'USD'}, {title: 'GBP'}];
 function ProfileScreen() {
@@ -64,7 +64,7 @@ function ProfileScreen() {
               <Text style={styles.greycolor2}>Choose Currency</Text>
             </View>
             <View>
-              <Image source={Profile} style={styles.profileimg} />
+              {/* <Image source={Profile} style={styles.profileimg} /> */}
             </View>
             <View style={styles.rowtext}>
               <Text style={styles.name}>Name:</Text>
@@ -120,9 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   linearGradient: {
-    flex: 1,
-    paddingLeft: wp('2'),
-    paddingRight: wp('2'),
+    paddingHorizontal: wp('2'),
   },
   hairline1: {
     backgroundColor: '#B8B5B5',

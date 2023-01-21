@@ -33,6 +33,7 @@ function MyReferrals() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: wp('2'),
   },
 
   textWrapper22: {

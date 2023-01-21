@@ -6070,6 +6070,11 @@
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.6.tgz"
   "version" "0.0.6"
 
+"react-native-image-picker@^5.0.1":
+  "integrity" "sha512-+poQTHOnEGrbxJnut591XA9006svFOyfPg/i5bv+fLuwoSHh5HW0E/PVhvT8lbX0Z5C108vh3DAsnrfFFnPBGw=="
+  "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-5.0.1.tgz"
+  "version" "5.0.1"
+
 "react-native-linear-gradient@^2.6.2":
   "integrity" "sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ=="
   "resolved" "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz"

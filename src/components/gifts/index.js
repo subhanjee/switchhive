@@ -40,6 +40,7 @@ function Gifts() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: wp('2'),
   },
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen

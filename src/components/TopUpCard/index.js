@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Jazz from '../../assets/images/jazz.png';
+// import Jazz from '../../assets/images/jazz.png';
 import {useNavigation} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -20,7 +20,7 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image source={Jazz} />
+          {/* <Image source={Jazz} /> */}
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>Jazz Pakistan</Text>
             <Text style={styles.greycolor1}>Variation type RANGE</Text>

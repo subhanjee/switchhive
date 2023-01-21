@@ -65,7 +65,7 @@ function WalletCards({item}) {
             data, bonus amounts valid for 15 days.:
           </Text>
           <TouchableOpacity onPress={toggleModal} style={styles.modelbtn}>
-            <Text style={styles.greycolor1}>Close</Text>
+            <Text style={styles.lineheight}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -85,6 +85,9 @@ const styles = StyleSheet.create({
   },
   rowwalletcards: {
     flexDirection: 'row',
+  },
+  lineheight: {
+    color: 'black',
   },
   inrowwalletbtn: {
     flexDirection: 'row',
@@ -113,9 +116,10 @@ const styles = StyleSheet.create({
   },
   walletgreycolor1: {
     color: '#4A524E',
-    fontSize: hp('2'),
+    fontSize: hp('1.8'),
     fontWeight: '400',
-    marginLeft: wp('2'),
+    marginLeft: wp('1'),
+    marginTop: hp('.3'),
   },
   punbgmarginleft: {
     marginLeft: wp('3'),
@@ -142,6 +146,7 @@ const styles = StyleSheet.create({
     paddingBottom: wp('2'),
     alignSelf: 'flex-end',
     marginTop: hp('2'),
+    borderRadius: 3,
   },
 });
 export default WalletCards;

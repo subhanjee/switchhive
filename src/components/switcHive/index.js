@@ -11,7 +11,6 @@ import {
   SafeAreaView,
   FlatList,
 } from 'react-native';
-
 import data from '../../helper/data.json';
 import SwitchiveCard from '../switchiveCards';
 function Switchive() {
@@ -40,6 +39,7 @@ function Switchive() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: wp('2'),
   },
   textWrapper22: {
     height: hp('80%'), // 70% of height device screen

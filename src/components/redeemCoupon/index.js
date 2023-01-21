@@ -50,9 +50,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp('2'),
-    paddingVertical: hp('1'),
+    paddingVertical: hp('2'),
   },
   ReedemWrapper22: {
+    height: hp('70%'),
     width: '100%', // 80% of width device screen
   },
   Redeemcard: {

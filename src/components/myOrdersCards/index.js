@@ -67,7 +67,7 @@ function MyOrderCards({item}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp('2'),
+    paddingHorizontal: wp('1'),
     paddingVertical: hp('1'),
   },
   container22: {
@@ -142,11 +142,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginTop: hp('3'),
     marginBottom: hp('3'),
+    borderRadius: 3,
   },
   procard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: hp('1'),
+  },
+  greycolor1: {
+    color: 'black',
   },
 });
 export default MyOrderCards;

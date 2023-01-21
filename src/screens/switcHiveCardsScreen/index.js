@@ -13,7 +13,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Jazz from '../../assets/images/jazz.png';
+// import Jazz from '../../assets/images/jazz.png';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -35,7 +35,7 @@ function SwitHiveCardsScreen() {
         alwaysBounceVertical={false}>
         <View style={styles.textWrapper22}>
           <View style={styles.imgView}>
-            <Image source={Jazz} style={styles.sizeImage} />
+            {/* <Image source={Jazz} style={styles.sizeImage} /> */}
           </View>
           <Text style={styles.color}>Jazz Pakistan</Text>
           <Text style={styles.color1}>

@@ -41,11 +41,12 @@ function Promotions() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: wp('2'),
   },
 
   textWrapper22: {
     height: hp('70%'), // 70% of height device screen
-    width: wp('100%'), // 80% of width device screen
+    width: '100%', // 80% of width device screen
   },
   topuptext: {
     fontSize: hp('3'),

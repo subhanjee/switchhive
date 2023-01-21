@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Jazz from '../../assets/images/jazz.png';
+// import Jazz from '../../assets/images/jazz.png';
 import {useNavigation} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -20,7 +20,7 @@ function SwitchiveCard(item) {
           <Icon name="heart" style={styles.switchicon} />
         </TouchableOpacity>
         <View style={styles.switchcard}>
-          <Image source={Jazz} style={styles.star} />
+          {/* <Image source={Jazz} style={styles.star} /> */}
           <View style={styles.switchmarginleft}>
             <Text style={styles.switchgreycolor}>Jazz Pakistan</Text>
             <Text style={styles.switchgreycolor1}>Variation type RANGE</Text>
@@ -35,7 +35,7 @@ function SwitchiveCard(item) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp('4'),
+    paddingHorizontal: wp('2'),
     paddingVertical: hp('1'),
   },
   switchcard: {

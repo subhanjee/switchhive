@@ -74,8 +74,7 @@ function PayBills() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: wp('2'),
-    paddingRight: wp('2'),
+    paddingHorizontal: wp('4'),
   },
   textWrapper22: {
     height: hp('70%'), // 70% of height device screen
