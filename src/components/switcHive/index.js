@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import data from '../../helper/data.json';
 import {useNavigation} from '@react-navigation/native';
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('1'),
   },
   textWrapper22: {
-    height: hp('80%'), // 70% of height device screen
+    height: hp('50%'), // 70% of height device screen
     width: '100%', // 80% of width device screen
   },
   topuptext: {
