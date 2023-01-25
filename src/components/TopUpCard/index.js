@@ -10,6 +10,7 @@ import {
 } from 'react-native-responsive-screen';
 function TopUpCard({item}) {
   const navigation = useNavigation();
+  console.log(item?.logoUrls[0]);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -21,7 +22,10 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image source={item?.logoUrls[0]} />
+          <Image
+            source={{uri: item.logoUrls[0]}}
+            style={{width: 100, height: 100, resizeMode: 'contain'}}
+          />
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>{item.name}</Text>
             <Text
