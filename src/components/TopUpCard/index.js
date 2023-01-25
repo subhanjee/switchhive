@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-// import Jazz from '../../assets/images/jazz.png';
+import Jazz from '../../assets/images/pubg.jpg';
+
 import {useNavigation} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -20,11 +21,27 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          {/* <Image source={Jazz} /> */}
+          <Image source={item?.logoUrls[0]} />
           <View style={styles.marginleft}>
-            <Text style={styles.greycolor}>Jazz Pakistan</Text>
-            <Text style={styles.greycolor1}>Variation type RANGE</Text>
-            <Text style={styles.greycolor2}>PKR 165.00 - 4950.00</Text>
+            <Text style={styles.greycolor}>{item.name}</Text>
+            <Text
+              style={
+                styles.greycolor1
+              }>{`Variation type ${item?.denominationType}`}</Text>
+            {item?.denominationType === 'FIXED' ? (
+              <Text style={styles.greycolor2}>{`${
+                item?.destinationCurrencyCode
+              } ${(item?.fixedAmounts[0] * item?.fx?.rate).toFixed(2)} - ${(
+                item?.fixedAmounts[item?.fixedAmounts.length - 1] *
+                item?.fx?.rate
+              ).toFixed(2)} `}</Text>
+            ) : (
+              <Text style={styles.greycolor2}>{`${
+                item?.destinationCurrencyCode
+              } ${(item?.minAmount * item?.fx?.rate).toFixed(2)} - ${(
+                item?.maxAmount * item?.fx?.rate
+              ).toFixed(2)} `}</Text>
+            )}
             <Text style={styles.redcolor}>Featured</Text>
           </View>
         </View>

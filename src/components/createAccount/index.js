@@ -7,9 +7,10 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import COLOR from '../../config/constant';
-
+import Config from 'react-native-config';
 function CreateAccount() {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper}>

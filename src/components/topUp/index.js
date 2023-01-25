@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,7 +13,65 @@ import {
 } from 'react-native';
 import data from '../../helper/data.json';
 import TopUpCard from '../TopUpCard';
+import Config from 'react-native-config';
+import {authenticationReloadly, topup} from '../../api';
+import {useSelector, useDispatch} from 'react-redux';
 function TopUp() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  // let location = useSelector(state => state.user.location);
+  // let topuptoken = useSelector(state => state.user.topupToken);
+
+  const [products, setproducts] = useState([]);
+  const [coutries, setcoutries] = useState([]);
+  const [countrycode, setcountrycode] = useState('pk');
+  const [locate, setlocate] = useState('pk');
+
+  const getTopups = topuptoken => {
+    topup(`operators/countries/${'pk'}`, {
+      method: 'get',
+      headers: {
+        Accept: 'application/com.reloadly.topups-v1+json',
+        Authorization: `Bearer ${topuptoken}`,
+      },
+    })
+      .then(res => {
+        setproducts(res.data);
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    let values = {
+      client_id: Config.REACT_APP_RELOADLY_CLIENT_ID,
+      client_secret: Config.REACT_APP_RELOADLY_API_CLIENT_SECRET,
+      grant_type: 'client_credentials',
+      audience: Config.REACT_APP_TOPUP_RELOADLY,
+    };
+
+    authenticationReloadly({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+
+      data: values,
+    })
+      .then(res => {
+        setLoading(false);
+        getTopups(res.data.access_token);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, [countrycode]);
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
@@ -25,7 +83,7 @@ function TopUp() {
           </Text>
           <SafeAreaView>
             <FlatList
-              data={data}
+              data={products}
               keyExtractor={data => data.id}
               renderItem={({item}) => <TopUpCard item={item} />}
             />
