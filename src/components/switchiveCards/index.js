@@ -20,11 +20,15 @@ function SwitchiveCard(item) {
           <Icon name="heart" style={styles.switchicon} />
         </TouchableOpacity>
         <View style={styles.switchcard}>
-          {/* <Image source={Jazz} style={styles.star} /> */}
+          <Image source={{uri: item.item?.avatar}} style={styles.star} />
           <View style={styles.switchmarginleft}>
-            <Text style={styles.switchgreycolor}>Jazz Pakistan</Text>
-            <Text style={styles.switchgreycolor1}>Variation type RANGE</Text>
-            <Text style={styles.switchgreycolor2}>PKR 165.00 - 4950.00</Text>
+            <Text style={styles.switchgreycolor}>{item.item?.name}</Text>
+            <Text style={styles.switchgreycolor2}>{`${
+              item.item?.currency
+            } ${(item.item?.minAmount).toFixed(
+              2,
+            )} - ${(item.item?.maxAmount).toFixed(2)} `}</Text>
+
             <Text style={styles.switchredcolor}>Featured</Text>
           </View>
         </View>
@@ -38,6 +42,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('2'),
     paddingVertical: hp('1'),
   },
+  star: {
+    width: 100,
+    height: 100,
+  },
   switchcard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -46,8 +54,8 @@ const styles = StyleSheet.create({
   switchbgcolor: {
     backgroundColor: 'white',
     elevation: 3,
-    padding: hp('2'),
-    marginTop: hp('2'),
+    padding: hp('1'),
+    marginTop: hp('.5'),
   },
   switchicon: {
     color: '#EC2027',

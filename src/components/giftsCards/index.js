@@ -8,6 +8,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 function GiftsCard(item) {
+  console.log(item.item);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -18,12 +19,24 @@ function GiftsCard(item) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          {/* <Image source={Jazz} style={styles.star} /> */}
+          <Image source={{uri: item.item?.logoUrls[0]}} style={styles.star} />
           <View style={styles.marginleft}>
-            <Text style={styles.greycolor}>Jazz Pakistan</Text>
-            <Text style={styles.greycolor1}>Variation type RANGE</Text>
-            <Text style={styles.greycolor2}>PKR 165.00 - 4950.00</Text>
-            <Text style={styles.redcolor}>Featured</Text>
+            <Text style={styles.greycolor}>{item.item?.productName}</Text>
+            <Text
+              style={
+                styles.greycolor1
+              }>{`Variation type ${item.item?.denominationType}`}</Text>
+            {item.item?.denominationType === 'FIXED' ? (
+              <Text style={styles.greycolor2}>{`${
+                item.item?.senderCurrencyCode
+              } ${item.item?.fixedRecipientDenominations?.[0]} - ${
+                item.item?.fixedRecipientDenominations?.[
+                  item.item?.fixedRecipientDenominations?.length - 1
+                ]
+              }`}</Text>
+            ) : (
+              <Text style={styles.greycolor2}>asa</Text>
+            )}
           </View>
         </View>
       </TouchableOpacity>
@@ -33,7 +46,7 @@ function GiftsCard(item) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp('2'),
+    paddingHorizontal: wp('1'),
     paddingVertical: hp('1'),
   },
   topupcard: {
@@ -41,20 +54,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: hp('-3'),
   },
+  star: {
+    width: 100,
+    height: 100,
+  },
   bgcolor: {
     backgroundColor: 'white',
     elevation: 3,
     padding: hp('2'),
-    marginTop: hp('2'),
+    marginTop: hp('1'),
   },
   icon: {
     color: '#EC2027',
     alignSelf: 'flex-end',
-    fontSize: hp('3'),
+    fontSize: hp('2.5'),
   },
   greycolor: {
     color: '#000',
-    fontSize: hp('2.5'),
+    fontSize: hp('2.2'),
     fontWeight: '700',
   },
   greycolor1: {

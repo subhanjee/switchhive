@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Jazz from '../../assets/images/pubg.jpg';
 
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -21,7 +20,7 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image source={item?.logoUrls[0]} />
+          {/* <Image source={{uri: item?.logoUrls[0]}} /> */}
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>{item.name}</Text>
             <Text
