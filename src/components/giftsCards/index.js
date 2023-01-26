@@ -14,7 +14,9 @@ function GiftsCard(item) {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.bgcolor}
-        onPress={() => navigation.navigate('GiftCards', {id: item.operatorId})}>
+        onPress={() =>
+          navigation.navigate('GiftCards', {id: item.item.productId})
+        }>
         <TouchableOpacity>
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: wp('1'),
     paddingVertical: hp('1'),
+    width: '100%',
   },
   topupcard: {
     flexDirection: 'row',
@@ -57,6 +60,7 @@ const styles = StyleSheet.create({
   star: {
     width: 100,
     height: 100,
+    resizeMode: 'contain',
   },
   bgcolor: {
     backgroundColor: 'white',
@@ -71,6 +75,7 @@ const styles = StyleSheet.create({
   },
   greycolor: {
     color: '#000',
+    width: wp('50%'),
     fontSize: hp('2.2'),
     fontWeight: '700',
   },
@@ -81,6 +86,7 @@ const styles = StyleSheet.create({
   },
   marginleft: {
     marginLeft: wp('3'),
+    width: '100%',
   },
   greycolor2: {
     color: '#8d8c8c',

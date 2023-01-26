@@ -21,7 +21,7 @@ function SwitchiveCard(item) {
       <TouchableOpacity
         style={styles.switchbgcolor}
         onPress={() =>
-          navigation.navigate('SwitHiveCards', {id: item.operatorId})
+          navigation.navigate('SwitHiveCards', {id: item?.item?.id})
         }>
         <TouchableOpacity>
           <Icon name="heart" style={styles.switchicon} />

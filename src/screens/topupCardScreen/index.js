@@ -68,6 +68,7 @@ function TopUpCardsScreen({route}) {
         value: data?.fixedAmounts[i],
       });
     }
+    console.log(opt, 'THIS IS OPT');
     setoptionsforPackage(opt);
   };
 
@@ -80,8 +81,8 @@ function TopUpCardsScreen({route}) {
       },
     })
       .then(res => {
-        console.log(res.data, 'data');
         setdata(res.data);
+        console.log(res.data, 'THIS IS DATA');
         if (res.data?.denominationType === 'FIXED') {
           getPakcages(res.data);
         }

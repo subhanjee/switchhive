@@ -16,12 +16,19 @@ import TopUpCard from '../TopUpCard';
 import Config from 'react-native-config';
 import {authenticationReloadly, topup} from '../../api';
 import {useSelector, useDispatch} from 'react-redux';
+import Loader from '../Loader';
+import {set} from 'react-native-reanimated';
+import {setTopUpToken} from '../../redux/user';
+
+const controller = new AbortController();
+const {signal} = controller;
+
 function TopUp() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   // let location = useSelector(state => state.user.location);
-  // let topuptoken = useSelector(state => state.user.topupToken);
+  let {topupToken} = useSelector(state => state.user);
 
   const [products, setproducts] = useState([]);
   const [coutries, setcoutries] = useState([]);
@@ -38,16 +45,18 @@ function TopUp() {
     })
       .then(res => {
         setproducts(res.data);
-        console.log(res.data);
-        setLoading(false);
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
 
   useEffect(() => {
     setLoading(true);
+
     let values = {
       client_id: Config.REACT_APP_RELOADLY_CLIENT_ID,
       client_secret: Config.REACT_APP_RELOADLY_API_CLIENT_SECRET,
@@ -65,12 +74,14 @@ function TopUp() {
       data: values,
     })
       .then(res => {
-        setLoading(false);
         getTopups(res.data.access_token);
+        setTopUpToken(res.data.access_token);
       })
       .catch(() => {
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, [countrycode]);
   return (
     <View style={styles.container}>
@@ -81,13 +92,17 @@ function TopUp() {
             Ready to use online or in-store. Buy Top Up with Bitcoin, Ether,
             Tether, and more.
           </Text>
-          <SafeAreaView>
-            <FlatList
-              data={products}
-              keyExtractor={data => data.id}
-              renderItem={({item}) => <TopUpCard item={item} />}
-            />
-          </SafeAreaView>
+          {loading ? (
+            <Loader />
+          ) : (
+            <SafeAreaView>
+              <FlatList
+                data={products}
+                keyExtractor={data => data.id}
+                renderItem={({item}) => <TopUpCard item={item} />}
+              />
+            </SafeAreaView>
+          )}
         </View>
       </View>
     </View>
@@ -95,7 +110,7 @@ function TopUp() {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: wp('1'),
   },
   textWrapper22: {

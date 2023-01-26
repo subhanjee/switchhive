@@ -17,14 +17,18 @@ import GiftsCard from '../giftsCards';
 import {authenticationReloadly, giftcards} from '../../api';
 import Config from 'react-native-config';
 import {useSelector, useDispatch} from 'react-redux';
+import {loadPartialConfig} from '@babel/core';
+import Loader from '../Loader';
+import axios from 'axios';
 function Gifts() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   let location = useSelector(state => state.user.location);
   let giftcardToken = useSelector(state => state.user.giftcardToken);
-
-  const [loading, setloading] = useState(true);
+  const controller = new AbortController();
+  const {signal} = controller;
+  const [loading, setLoading] = useState(true);
   const [products, setproducts] = useState([]);
   const [coutries, setcoutries] = useState([]);
   const [countrycode, setcountrycode] = useState('pk');
@@ -37,18 +41,19 @@ function Gifts() {
         Accept: 'application/com.reloadly.giftcards-v1+json',
         Authorization: `Bearer ${token}`,
       },
+      signal,
     })
       .then(res => {
         setproducts(res.data);
-        setloading(false);
+        setLoading(false);
       })
       .catch(() => {
-        setloading(false);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    setloading(true);
+    setLoading(true);
     let values = {
       client_id: Config.REACT_APP_RELOADLY_CLIENT_ID,
       client_secret: Config.REACT_APP_RELOADLY_API_CLIENT_SECRET,
@@ -65,12 +70,13 @@ function Gifts() {
       data: values,
     })
       .then(res => {
-        setloading(false);
+        setLoading(false);
         getGiftCards(res.data.access_token);
       })
       .catch(() => {
-        setloading(false);
+        setLoading(false);
       });
+    return () => controller.abort();
   }, [countrycode]);
   return (
     <View style={styles.container}>
@@ -81,13 +87,17 @@ function Gifts() {
             Ready to use online or in-store. Buy Gift Cards with Bitcoin, Ether,
             Tether, and more.
           </Text>
-          <SafeAreaView>
-            <FlatList
-              data={products}
-              keyExtractor={data => data.id}
-              renderItem={({item}) => <GiftsCard item={item} />}
-            />
-          </SafeAreaView>
+          {loading ? (
+            <Loader />
+          ) : (
+            <SafeAreaView>
+              <FlatList
+                data={products}
+                keyExtractor={data => data.id}
+                renderItem={({item}) => <GiftsCard item={item} />}
+              />
+            </SafeAreaView>
+          )}
         </View>
       </View>
     </View>

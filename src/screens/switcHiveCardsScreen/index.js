@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,9 +13,19 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-// import Jazz from '../../assets/images/jazz.png';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Config from 'react-native-config';
+import {
+  authenticationReloadly,
+  cards,
+  crypto,
+  currencyRate,
+  topup,
+} from '../../api';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../../components/Loader';
 
 const countriesWithFlags = [
   {title: 'Egypt'},
@@ -26,104 +36,251 @@ const countriesWithFlags = [
   {title: 'England'},
   {title: 'Dubai'},
 ];
-const USD = [{title: 'Usd'}, {title: 'Ustd'}];
-function SwitHiveCardsScreen() {
+
+function SwitchiveCardScreen({route}) {
+  const navigation = useNavigation();
+  const {id} = route.params;
+  console.log(id);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [usdtrate, setusdtrate] = useState(0);
+  const [errormessage, seterrormessage] = useState(false);
+  const [value, setvalue] = useState(0);
+  const [optionsforPackage, setoptionsforPackage] = useState([]);
+  const [packagestatus, setpackagestatus] = useState('');
+  const [topupToken, setTopUpToken] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currencyRates, setCurrencyRates] = useState([]);
+  const [phone, setPhone] = useState('');
+  const [estimatedRate, setEstimatedRate] = useState({
+    symbol: 'USD',
+    title: 'USD',
+    price: 1,
+  });
+  const [coins, setCoins] = useState([]);
+
+  const getCoins = () => {
+    crypto({
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then(res => {
+        setCoins([...convertToArray(res.data.data)]);
+      })
+      .catch(err => {
+        console.log(err, 'Coins get failed');
+      });
+  };
+  const convertToArray = obj => {
+    let arr = Object.keys(obj).map(key => {
+      return {
+        label: obj[key].symbol,
+        value: obj[key].price,
+        title: obj[key].name,
+      };
+    });
+    items = arr;
+    return arr;
+  };
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token_access');
+      console.log(token, 'TOKEN');
+      getData(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getData = token => {
+    setLoading(true);
+    cards(`/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const getCurrencyValue = coin => {
+    const value = currencyRates.map(currency => {
+      if (currency[coin]) {
+        return currency[coin];
+      }
+    });
+    let data = value.filter(element => {
+      return element !== undefined;
+    });
+    return data[0];
+  };
+  const getCurrencyRates = () => {
+    setLoading(true);
+    currencyRate({
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': Config.REACT_APP_RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'currencyscoop.p.rapidapi.com',
+      },
+    })
+      .then(res => {
+        let rates = res.data.response.rates;
+        let ratesArray = [{USD: rates.USD}, {GBP: rates.GBP}, {EUR: rates.EUR}];
+        setCurrencyRates(ratesArray);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (value !== undefined) {
+      if (value < data?.minAmount || value > data?.maxAmount) {
+        seterrormessage(true);
+        setusdtrate(0);
+      } else {
+        seterrormessage(false);
+        let num = value * data?.fx?.rate;
+        setusdtrate((Math.round(num * 100) / 100).toFixed(2));
+      }
+    }
+  }, [value, estimatedRate]);
+
+  useEffect(() => {
+    getCoins();
+    getCurrencyRates();
+    getToken();
+    setLoading(true);
+  }, []);
   return (
     <View style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        alwaysBounceVertical={false}>
-        <View style={styles.textWrapper22}>
-          <View style={styles.imgView}>
-            {/* <Image source={Jazz} style={styles.sizeImage} /> */}
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          alwaysBounceVertical={false}>
+          <View style={styles.textWrapper22}>
+            <View style={styles.imgView}>
+              {data && (
+                <Image source={{uri: data?.avatar}} style={styles.sizeImage} />
+              )}
+            </View>
+            <Text style={styles.color}>{data?.name}</Text>
+            <Text style={styles.color1}>
+              Pay on Jazz Pakistan with Crypto. Buy Jazz Pakistan top up with
+              Bitcoin, Lightning, Ethereum, Binance Pay, USDT, USDC, Dogecoin,
+              Litecoin, Dash. Instant email, delivery. No account required.
+              Start living on crypto!
+            </Text>
+            <View style={styles.row}>
+              <TextInput
+                style={styles.textInput}
+                placeholderTextColor={COLORS.BORDER}
+                placeholder={`${data?.minAmount} ${data?.currency} - ${data?.maxAmount} ${data?.currency}`}
+                onChangeText={e => setvalue(e)}
+                value={value}
+                keyboardType="numeric"
+                maxLength={10} //setting limit of input
+              />
+              <View>
+                <Text
+                  style={{color: 'green', width: wp(40), marginLeft: wp(2)}}>
+                  Delivered Amount in USD{' '}
+                  {value
+                    ? (value / getCurrencyValue(data.currency)).toFixed(3)
+                    : '0'}
+                </Text>
+              </View>
+            </View>
+            <View>
+              <SelectDropdown
+                data={coins}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                  setEstimatedRate(selectedItem);
+                }}
+                defaultButtonText={`${
+                  value
+                    ? (value / getCurrencyValue(data.currency)).toFixed(3)
+                    : '0'
+                } USD Estimated price`}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return (
+                    <Text>
+                      {value / selectedItem.value
+                        ? String(
+                            value /
+                              getCurrencyValue(data.currency) /
+                              selectedItem.value,
+                          ).split('.')[1] > 0
+                          ? (
+                              value /
+                              getCurrencyValue(data.currency) /
+                              selectedItem.value
+                            ).toFixed(8)
+                          : String(
+                              value /
+                                getCurrencyValue(data.currency) /
+                                selectedItem.value,
+                            ).split('.')[0]
+                        : 0}{' '}
+                      {selectedItem.label}
+                    </Text>
+                  );
+                }}
+                rowTextForSelection={(item, index) => {
+                  return item.title;
+                }}
+                buttonStyle={styles.dropdown4BtnStyle}
+                buttonTextStyle={styles.dropdown4BtnTxtStyle}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <FontAwesome
+                      name={isOpened ? 'chevron-up' : 'chevron-down'}
+                      color={'#444'}
+                      size={10}
+                    />
+                  );
+                }}
+                dropdownIconPosition={'right'}
+                dropdownStyle={styles.dropdown4DropdownStyle}
+                rowStyle={styles.dropdown4RowStyle}
+                rowTextStyle={styles.dropdown4RowTxtStyle}
+              />
+            </View>
           </View>
-          <Text style={styles.color}>Jazz Pakistan</Text>
+          <View style={styles.twobtninrow}>
+            <TouchableOpacity style={styles.redbtn}>
+              <Text style={styles.whitetext}>Add to Cart</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.whitebtn}>
+              <Text style={styles.color1}>Purchase as gift</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.hairline} />
+          <Text style={styles.color1}>Description</Text>
+          <View style={styles.hairline} />
           <Text style={styles.color1}>
-            Pay on Jazz Pakistan with Crypto. Buy Jazz Pakistan top up with
-            Bitcoin, Lightning, Ethereum, Binance Pay, USDT, USDC, Dogecoin,
-            Litecoin, Dash. Instant email, delivery. No account required. Start
-            living on crypto!
+            Nufferton was founded in 2016 on one simple idea: to create a
+            contemporary version of the nearly forgotten, but amazing pyjamas,
+            made for the sheets... and the streets. The loungewear label was
+            dreamed up in Stockholm, and perhaps it’s not a coincidence. Swedes
+            spend more time at home than anyone in the world.
           </Text>
-          <Text style={styles.color2}>Select Package</Text>
-          <View style={styles.row}>
-            <SelectDropdown
-              data={USD}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              defaultButtonText={'Usd'}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem.title;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item.title;
-              }}
-              buttonStyle={styles.dropdown4BtnStyle2}
-              buttonTextStyle={styles.dropdown4BtnTxtStyle}
-              renderDropdownIcon={isOpened => {
-                return (
-                  <FontAwesome
-                    name={isOpened ? 'chevron-up' : 'chevron-down'}
-                    color={'#444'}
-                    size={10}
-                  />
-                );
-              }}
-              dropdownIconPosition={'right'}
-              dropdownStyle={styles.dropdown4DropdownStyle}
-              rowStyle={styles.dropdown4RowStyle}
-              rowTextStyle={styles.dropdown4RowTxtStyle}
-            />
-
-            <SelectDropdown
-              data={countriesWithFlags}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              defaultButtonText={'0 USD Estimated price'}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem.title;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item.title;
-              }}
-              buttonStyle={styles.dropdown4BtnStyle}
-              buttonTextStyle={styles.dropdown4BtnTxtStyle}
-              renderDropdownIcon={isOpened => {
-                return (
-                  <FontAwesome
-                    name={isOpened ? 'chevron-up' : 'chevron-down'}
-                    color={'#444'}
-                    size={10}
-                  />
-                );
-              }}
-              dropdownIconPosition={'right'}
-              dropdownStyle={styles.dropdown4DropdownStyle}
-              rowStyle={styles.dropdown4RowStyle}
-              rowTextStyle={styles.dropdown4RowTxtStyle}
-            />
-          </View>
-        </View>
-        <View style={styles.twobtninrow}>
-          <TouchableOpacity style={styles.redbtn}>
-            <Text style={styles.whitetext}>Add to Cart</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.whitebtn}>
-            <Text>Purchase as gift</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.hairline} />
-        <Text style={styles.color1}>Description</Text>
-        <View style={styles.hairline} />
-        <Text style={styles.color1}>
-          Nufferton was founded in 2016 on one simple idea: to create a
-          contemporary version of the nearly forgotten, but amazing pyjamas,
-          made for the sheets... and the streets. The loungewear label was
-          dreamed up in Stockholm, and perhaps it’s not a coincidence. Swedes
-          spend more time at home than anyone in the world.
-        </Text>
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -182,6 +339,7 @@ const styles = StyleSheet.create({
     width: wp('55%'),
     padding: hp('1'),
     borderRadius: 2,
+    color: COLORS.BLACK,
   },
   textInputphone: {
     borderWidth: 1,
@@ -189,70 +347,67 @@ const styles = StyleSheet.create({
     width: wp('70%'),
     padding: hp('1'),
     borderRadius: 2,
+    color: COLORS.BLACK,
   },
   phonetext: {
     marginTop: hp('2'),
     marginBottom: hp('1'),
+    color: COLORS.BLACK,
   },
 
   redboxrow: {
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     marginTop: hp('1'),
     marginBottom: hp('1'),
+
+    flexWrap: 'wrap',
   },
   redbox: {
     backgroundColor: '#EA1F2C',
-    alignSelf: 'center',
-    paddingLeft: wp('5'),
-    paddingRight: wp('5'),
-    paddingTop: hp('2'),
-    paddingBottom: hp('2'),
+    // display: 'flex',
+    marginTop: hp('0.4'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: 50,
+
     marginLeft: wp('1'),
     borderRadius: 5,
   },
   twobtninrow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     marginTop: hp('2'),
     marginBottom: hp('2'),
   },
   redbtn: {
     backgroundColor: '#EA1F2C',
-    paddingLeft: wp('13'),
-    paddingRight: wp('13'),
-    paddingTop: hp('2'),
-    paddingBottom: hp('2'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('2'),
     borderRadius: 25,
   },
   whitetext: {
     color: COLORS.WHITE,
   },
   whitebtn: {
-    paddingLeft: wp('13'),
-    paddingRight: wp('13'),
-    paddingTop: hp('2'),
-    paddingBottom: hp('2'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('2'),
     borderRadius: 25,
+    marginTop: hp(2),
     backgroundColor: '#ECEFED',
   },
   dropdown4BtnStyle: {
-    width: wp('40%'),
+    width: '90%',
     height: hp('6'),
     borderRadius: 5,
-    marginRight: hp('2'),
     marginTop: hp('1'),
-  },
-  dropdown4BtnStyle2: {
-    width: wp('40%'),
-    height: hp('6'),
-    borderRadius: 5,
-    marginRight: hp('2'),
-    marginTop: hp('1'),
-    borderWidth: 1,
   },
   dropdown4BtnTxtStyle: {color: '#444', textAlign: 'left'},
   dropdown4DropdownStyle: {backgroundColor: '#EFEFEF'},
   dropdown4RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown4RowTxtStyle: {color: '#444', textAlign: 'left'},
 });
-export default SwitHiveCardsScreen;
+export default SwitchiveCardScreen;

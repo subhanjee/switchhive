@@ -11,6 +11,7 @@ import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {setLoginState, setUser} from '../../redux/user';
 import {auth} from '../../api';
+import {setUser, setLoginState} from '../../redux/user';
 
 function LoginTwo() {
   const navigation = useNavigation();
@@ -23,6 +24,9 @@ function LoginTwo() {
     try {
       await AsyncStorage.setItem('user', JSON.stringify(value.user));
       await AsyncStorage.setItem('token_access', value?.tokens?.access?.token);
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      setUser(value.user);
+      setLoginState(true);
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +44,7 @@ function LoginTwo() {
       .then(res => {
         console.log('text');
         if (res.data.user.role === 'blogWriter') {
-          // messageApi.error("You can't access this with Writer Account");
+          console.log("You can't access this with Writer Account");
         } else {
           storeUser(res.data);
           // localStorage.setItem(

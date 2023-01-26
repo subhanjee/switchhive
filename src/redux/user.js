@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -62,5 +63,25 @@ export const {
   setPhoneNumber,
   setEmail,
 } = userSlice.actions;
+
+export const loadInitialState = async () => {
+  try {
+    const user = await AsyncStorage.getItem('user');
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+
+    if (user && isLoggedIn) {
+      console.log(JSON.parse(user), 'UISER');
+      console.log(isLoggedIn, 'ISLOGGEDIN');
+      return {
+        user: {
+          user: JSON.parse(user),
+          isLoggedIn: JSON.parse(isLoggedIn),
+        },
+      };
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export default userSlice.reducer;

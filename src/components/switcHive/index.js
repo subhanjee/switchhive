@@ -18,6 +18,9 @@ import SwitchiveCard from '../switchiveCards';
 import {cards} from '../../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
+
+const controller = new AbortController();
+const {signal} = controller;
 function Switchive() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -48,6 +51,7 @@ function Switchive() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
+      signal,
     })
       .then(res => {
         setproducts(res.data.results);
@@ -55,13 +59,16 @@ function Switchive() {
         setLoading(false);
       })
       .catch(err => {
+        console.log(err);
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    // setloading(true);
     getToken();
+    return () => {
+      controller.abort();
+    };
   }, []);
   return (
     <View style={styles.container}>
