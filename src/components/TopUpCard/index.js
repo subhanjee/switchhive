@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Jazz from '../../assets/images/pubg.jpg';
 
 import {useNavigation} from '@react-navigation/native';
 import {

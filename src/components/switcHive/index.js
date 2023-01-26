@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,10 +10,59 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import data from '../../helper/data.json';
+import {useNavigation} from '@react-navigation/native';
 import SwitchiveCard from '../switchiveCards';
+import {cards} from '../../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector, useDispatch} from 'react-redux';
 function Switchive() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  let location = useSelector(state => state.user.location);
+  let giftcardToken = useSelector(state => state.user.giftcardToken);
+
+  const [loading, setLoading] = useState(true);
+  const [products, setproducts] = useState([]);
+  const [coutries, setcoutries] = useState([]);
+  const [countrycode, setcountrycode] = useState('pk');
+  const [locate, setlocate] = useState('pk');
+
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token_access');
+      console.log(token, 'TOKEN');
+      getSwitchHiveCards(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getSwitchHiveCards = token => {
+    // setLoading(true);
+    cards({
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => {
+        setproducts(res.data.results);
+        console.log(res.data.results);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    // setloading(true);
+    getToken();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
@@ -26,8 +75,8 @@ function Switchive() {
           </Text>
           <SafeAreaView>
             <FlatList
-              data={data}
-              keyExtractor={data => data.name}
+              data={products}
+              keyExtractor={data => data.id}
               renderItem={({item}) => <SwitchiveCard item={item} />}
             />
           </SafeAreaView>
@@ -39,10 +88,10 @@ function Switchive() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp('2'),
+    paddingHorizontal: wp('1'),
   },
   textWrapper22: {
-    height: hp('80%'), // 70% of height device screen
+    height: hp('50%'), // 70% of height device screen
     width: '100%', // 80% of width device screen
   },
   topuptext: {

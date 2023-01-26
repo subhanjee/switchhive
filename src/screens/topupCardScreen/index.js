@@ -33,7 +33,7 @@ function TopUpCardsScreen({route}) {
   const navigation = useNavigation();
   const {id} = route.params;
   console.log(id);
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [data, setdata] = useState({});
   const [usdtrate, setusdtrate] = useState(0);
   const [errormessage, seterrormessage] = useState(false);
@@ -160,7 +160,6 @@ function TopUpCardsScreen({route}) {
         })
         .catch(err => {
           console.log(err);
-          setloading(false);
         });
     } else {
       console.log('FALSE');
@@ -177,10 +176,12 @@ function TopUpCardsScreen({route}) {
           alwaysBounceVertical={false}>
           <View style={styles.textWrapper22}>
             <View style={styles.imgView}>
-              <Image
-                source={{uri: data?.logoUrls[0]}}
-                style={styles.sizeImage}
-              />
+              {data && (
+                <Image
+                  source={{uri: data?.logoUrls[0]}}
+                  style={styles.sizeImage}
+                />
+              )}
             </View>
             <Text style={styles.color}>{data?.name}</Text>
             <Text style={styles.color1}>

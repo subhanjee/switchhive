@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -7,9 +7,64 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import COLOR from '../../config/constant';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {setLoginState, setUser} from '../../redux/user';
+import {auth} from '../../api';
 
 function LoginTwo() {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const storeUser = async value => {
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(value.user));
+      await AsyncStorage.setItem('token_access', value?.tokens?.access?.token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // const [messageApi, contextHolder] = message.useMessage();
+  const setLoadingFalse = () => {
+    setLoading(false);
+  };
+  const onFinish = values => {
+    setLoading(true);
+    auth('login', {
+      method: 'post',
+      data: {email: email, password: password},
+    })
+      .then(res => {
+        console.log('text');
+        if (res.data.user.role === 'blogWriter') {
+          // messageApi.error("You can't access this with Writer Account");
+        } else {
+          storeUser(res.data);
+          // localStorage.setItem(
+          //   'token-access',
+          //   res?.data?.tokens?.access?.token,
+          // );
+          // localStorage.setItem("user", JSON.stringify(res?.data?.user));
+          // localStorage.setItem("email", res?.data?.user?.email);
+          // dispatch(setLoginState(true));
+          // dispatch(setUser(res.data.user));
+          setLoadingFalse();
+          navigation.navigate('App');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoadingFalse();
+        setEmail('');
+        setPassword('');
+      });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper}>
@@ -19,30 +74,30 @@ function LoginTwo() {
             Log in below to access your Switchive Account
           </Text>
           <View>
-            <TextInput style={styles.input} placeholder="Email" />
+            <TextInput
+              onChangeText={e => setEmail(e)}
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+            />
             <TextInput
               style={styles.input}
               placeholder="Password"
               secureTextEntry
               right={<TextInput.Icon icon="eye" />}
+              onChangeText={e => setPassword(e)}
+              value={password}
             />
             <Text style={styles.forgettext}>Forget your Password</Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.logincir}
-          onPress={() => navigation.navigate('App')}>
+        <TouchableOpacity style={styles.logincir} onPress={onFinish}>
           <Text style={styles.blackcolor}>Login</Text>
         </TouchableOpacity>
         <View style={styles.dontview}>
           <Text style={styles.logintext33}>
             No account? You can
-            <Text
-              style={styles.logintext44}
-              onPress={() => navigation.navigate('createAccount')}>
-              {' '}
-              create one here
-            </Text>
+            <Text style={styles.logintext44}> create one here</Text>
           </Text>
         </View>
       </View>
