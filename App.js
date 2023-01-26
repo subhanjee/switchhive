@@ -4,14 +4,13 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './src/navigation/stackNavigation';
 import {enableScreens} from 'react-native-screens';
-import {Provider, useDispatch} from 'react-redux';
+import {Provider} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import store from './src/redux/store';
 
 enableScreens();
 
 const App = () => {
-  const dispatch = useDispatch();
   const [location, setLocation] = useState({});
   const [countryName, setCountryName] = useState('');
   const [countryCode, setCountryCode] = useState('');
