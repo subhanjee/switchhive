@@ -65,11 +65,11 @@ function WishList() {
       },
     })
       .then(res => {
-        // logger("removed", res.data);
-        getWishlist();
+        // Get user and Token
+        getToken();
       })
       .catch(err => {
-        console.log(err);
+        console.log(err, 'wishlist error');
         // logger(err, "error removing from Wishlist");
       });
   };

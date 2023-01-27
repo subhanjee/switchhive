@@ -49,7 +49,7 @@ function MyOrder() {
     })
       .then(res => {
         // logger(res.data, "data");
-        // setData(res.data.results);
+        setData(res.data.results);
         console.log(res.data.results, 'order');
       })
       .catch(error => {

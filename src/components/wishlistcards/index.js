@@ -7,20 +7,23 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import CacheImage from '../CacheImage';
 function WishListCards({item, onDelete}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.bgcolor22}
-        onPress={() =>
-          navigation.navigate('TopUpCards', {id: item.operatorId})
+        onPress={
+          () => console.log('TO WISHLIST')
+          // navigation.navigate('TopUpCards', {id: item.operatorId})
         }>
-        <TouchableOpacity onPress={onDelete}>
+        <TouchableOpacity onPress={() => onDelete(item)}>
           <Icon name="close" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.pubgcard}>
-          <Image source={{uri: item.image}} style={styles.pubg} />
+          {/* <Image source={{uri: item.image}} style={styles.pubg} /> */}
+          <CacheImage imageUrl={item.image} />
           <View style={styles.punbgmarginleft}>
             <Text style={styles.pubggreycolor}>{item.name}</Text>
           </View>
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   },
   pubgcard: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: hp('1'),
   },
   pubg: {
@@ -64,6 +67,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     fontWeight: '500',
+    width: wp(51),
   },
   pubggreycolor1: {
     color: '#000',
