@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
 
-function PromotionsCard() {
+function PromotionsCard(item) {
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
