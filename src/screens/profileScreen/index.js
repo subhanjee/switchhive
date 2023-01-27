@@ -19,10 +19,40 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 // import Profile from '../../assets/images/person-profile-image-icon.webp';
+// import { users, orders, wishlist, redeem, wallet, auth } from "../../api";
 
 const countriesWithFlags = [{title: 'EUR'}, {title: 'USD'}, {title: 'GBP'}];
 function ProfileScreen() {
   const navigation = useNavigation();
+  // const [data, setData] = useState([]);
+
+  // const getUser = () => {
+  //   if (localStorage.getItem("token-access") !== null) {
+  //     const decoded = jwtDecode(localStorage.getItem("token-access"));
+  //     users(`/${decoded.sub}`, {
+  //       method: "get",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token-access")}`,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         // logger(res.data);
+  //         dispatch(setUser(res.data));
+  //         // dispatch(setLoginState(true));
+  //         // getCurrencyValue(res.data, currency);
+  //         // getRedeemables(res.data.id);
+  //         // logger(res.data.id, "after API Call");
+
+  //         // messageApi.success("login success");
+  //       })
+  //       .catch((error) => {
+  //         // messageApi.error(error.response.data.message);
+  //         dispatch(setLoginState(false));
+  //         // logger(error.response.data.message);
+  //         logger(error);
+  //       });
+  //   }
+  // };
   return (
     <View style={styles.container}>
       <ScrollView
