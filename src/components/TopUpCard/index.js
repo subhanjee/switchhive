@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp('4'),
+    borderRadius: wp('4'),
     paddingVertical: hp('1'),
   },
   topupcard: {
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
   bgcolor: {
     backgroundColor: 'white',
     elevation: 3,
+    borderRadius: wp('4'),
     padding: hp('2'),
-    marginTop: hp('2'),
   },
   icon: {
     color: '#EC2027',
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: hp('2.5'),
     fontWeight: '700',
+    width: wp(50),
   },
   greycolor1: {
     color: '#000',

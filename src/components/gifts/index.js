@@ -45,11 +45,12 @@ function Gifts() {
     })
       .then(res => {
         setproducts(res.data);
-        setLoading(false);
       })
-      .catch(() => {
-        setLoading(false);
-      });
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
+    return () => controller.abort();
   };
 
   useEffect(() => {
@@ -70,7 +71,6 @@ function Gifts() {
       data: values,
     })
       .then(res => {
-        setLoading(false);
         getGiftCards(res.data.access_token);
       })
       .catch(() => {
@@ -88,7 +88,9 @@ function Gifts() {
             Tether, and more.
           </Text>
           {loading ? (
-            <Loader />
+            <View style={{marginTop: hp(10)}}>
+              <Loader />
+            </View>
           ) : (
             <SafeAreaView>
               <FlatList
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   topuptext1: {
-    fontSize: hp('2.5'),
+    fontSize: hp('2'),
     color: '#8B8B8B',
     fontWeight: '500',
     textAlign: 'center',

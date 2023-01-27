@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: hp('2'),
     marginTop: hp('1'),
+    borderRadius: wp('4'),
   },
   icon: {
     color: '#EC2027',

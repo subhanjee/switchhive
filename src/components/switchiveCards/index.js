@@ -46,6 +46,7 @@ function SwitchiveCard({item}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderRadius: wp('2'),
     paddingHorizontal: wp('2'),
     paddingVertical: hp('1'),
   },
@@ -56,13 +57,15 @@ const styles = StyleSheet.create({
   switchcard: {
     flexDirection: 'row',
     alignItems: 'center',
+
     marginTop: hp('-3'),
   },
   switchbgcolor: {
     backgroundColor: 'white',
     elevation: 3,
     padding: hp('1'),
-    marginTop: hp('.5'),
+    // marginTop: hp('.5'),
+    borderRadius: wp('4'),
   },
   switchicon: {
     color: '#EC2027',

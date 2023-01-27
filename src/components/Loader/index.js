@@ -1,9 +1,9 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 
-const Loader = () => (
+const Loader = ({size = 'large'}) => (
   <View style={styles.container}>
-    <ActivityIndicator size={'large'} />
+    <ActivityIndicator size={size} />
   </View>
 );
 

@@ -26,6 +26,8 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../../components/Loader';
+import {addItem} from '../../redux/cart';
+import {useDispatch} from 'react-redux';
 
 const countriesWithFlags = [
   {title: 'Egypt'},
@@ -39,6 +41,7 @@ const countriesWithFlags = [
 
 function SwitchiveCardScreen({route}) {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {id} = route.params;
   console.log(id);
   const [loading, setLoading] = useState(true);
@@ -82,7 +85,6 @@ function SwitchiveCardScreen({route}) {
         title: obj[key].name,
       };
     });
-    items = arr;
     return arr;
   };
   const getToken = async () => {
@@ -143,7 +145,25 @@ function SwitchiveCardScreen({route}) {
         console.log(err);
       });
   };
+  function addToCart() {
+    dispatch(
+      addItem({
+        id: data.id,
+        name: data.name,
+        logoUrls: data.avatar,
+        currency: data.currency,
+        amount: Number(value / getCurrencyValue(data.currency)),
+        totalAmount: Number(value / getCurrencyValue(data.currency)),
+        currencyAmount: Number(value),
+        email: 'talal@gmail.com',
+        type: 'switch-hive-card',
+      }),
+    );
+    // dispatch(setUSDAmount(value));
+    // dispatch(setCryptoAmount((value / estimatedRate.price).toFixed(8)));
 
+    navigation.navigate('Cart');
+  }
   useEffect(() => {
     if (value !== undefined) {
       if (value < data?.minAmount || value > data?.maxAmount) {
@@ -263,7 +283,9 @@ function SwitchiveCardScreen({route}) {
           </View>
           <View style={styles.twobtninrow}>
             <TouchableOpacity style={styles.redbtn}>
-              <Text style={styles.whitetext}>Add to Cart</Text>
+              <Text style={styles.whitetext} onPress={addToCart}>
+                Add to Cart
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.whitebtn}>
               <Text style={styles.color1}>Purchase as gift</Text>
@@ -377,7 +399,7 @@ const styles = StyleSheet.create({
   },
   twobtninrow: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     marginTop: hp('2'),
     marginBottom: hp('2'),
   },

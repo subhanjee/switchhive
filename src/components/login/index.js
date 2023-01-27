@@ -3,15 +3,24 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import COLOR from '../../config/constant';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 // import {setLoginState, setUser} from '../../redux/user';
 import {auth} from '../../api';
 import {setUser, setLoginState} from '../../redux/user';
+import Loader from '../Loader';
 
 function LoginTwo() {
   const navigation = useNavigation();
@@ -35,6 +44,13 @@ function LoginTwo() {
   const setLoadingFalse = () => {
     setLoading(false);
   };
+  const showToast = (type, message) => {
+    Toast.show({
+      type: type,
+      text1: message,
+      text2: 'This is some something 👋',
+    });
+  };
   const onFinish = values => {
     setLoading(true);
     auth('login', {
@@ -47,20 +63,14 @@ function LoginTwo() {
           console.log("You can't access this with Writer Account");
         } else {
           storeUser(res.data);
-          // localStorage.setItem(
-          //   'token-access',
-          //   res?.data?.tokens?.access?.token,
-          // );
-          // localStorage.setItem("user", JSON.stringify(res?.data?.user));
-          // localStorage.setItem("email", res?.data?.user?.email);
-          // dispatch(setLoginState(true));
-          // dispatch(setUser(res.data.user));
           setLoadingFalse();
+          showToast('success', 'Success!');
           navigation.navigate('App');
         }
       })
       .catch(error => {
         console.log(error);
+        showToast('error', 'Logged In Error');
       })
       .finally(() => {
         setLoadingFalse();
@@ -71,6 +81,7 @@ function LoginTwo() {
 
   return (
     <View style={styles.container}>
+      <Toast />
       <View style={styles.textWrapper}>
         <View>
           <Text style={styles.logintext}>Welcome back!</Text>
@@ -96,7 +107,11 @@ function LoginTwo() {
           </View>
         </View>
         <TouchableOpacity style={styles.logincir} onPress={onFinish}>
-          <Text style={styles.blackcolor}>Login</Text>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.blackcolor}>Login</Text>
+          )}
         </TouchableOpacity>
         <View style={styles.dontview}>
           <Text style={styles.logintext33}>
