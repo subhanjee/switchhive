@@ -7,9 +7,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import CacheImage from '../CacheImage';
 function TopUpCard({item}) {
   const navigation = useNavigation();
-  console.log(item?.logoUrls[0]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -21,10 +22,11 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image
+          {/* <Image
             source={{uri: item.logoUrls[0]}}
             style={{width: 100, height: 100, resizeMode: 'contain'}}
-          />
+          /> */}
+          <CacheImage imageUrl={item.logoUrls[0]} />
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>{item.name}</Text>
             <Text
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp('4'),
+    borderRadius: wp('4'),
     paddingVertical: hp('1'),
   },
   topupcard: {
@@ -66,8 +69,8 @@ const styles = StyleSheet.create({
   bgcolor: {
     backgroundColor: 'white',
     elevation: 3,
+    borderRadius: wp('4'),
     padding: hp('2'),
-    marginTop: hp('2'),
   },
   icon: {
     color: '#EC2027',
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: hp('2.5'),
     fontWeight: '700',
+    width: wp(50),
   },
   greycolor1: {
     color: '#000',

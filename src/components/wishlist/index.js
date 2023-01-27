@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -13,7 +13,70 @@ import {
 } from 'react-native';
 import data from '../../helper/data.json';
 import WishListCards from '../wishlistcards';
+import {wishlist} from '../../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 function WishList() {
+  const [wishlistData, setWishlistData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState('');
+
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token_access');
+      const user = await AsyncStorage.getItem('user');
+      console.log(token, 'TOKEN');
+      getWishlist(token, user.id);
+      setToken(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getWishlist = (token, id) => {
+    // dispatch(clearWishlist());
+    wishlist({
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        createdBy: id,
+      },
+    })
+      .then(res => {
+        // logger(res.data, 'data');
+        setWishlistData(res.data.results);
+        console.log(res.data.results);
+      })
+      .catch(error => {
+        console.log(error, 'wsih');
+        // logger(error.response.data.message);
+        // logger(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const removeFromWishlist = item => {
+    wishlist(`/${item.productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => {
+        // Get user and Token
+        getToken();
+      })
+      .catch(err => {
+        console.log(err, 'wishlist error');
+        // logger(err, "error removing from Wishlist");
+      });
+  };
+  useEffect(() => {
+    getToken();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
@@ -21,9 +84,11 @@ function WishList() {
           <Text style={styles.topuptext}>WishList Cards</Text>
           <SafeAreaView>
             <FlatList
-              data={data}
+              data={wishlistData}
               keyExtractor={data => data.id}
-              renderItem={({item}) => <WishListCards item={item} />}
+              renderItem={({item}) => (
+                <WishListCards onDelete={removeFromWishlist} item={item} />
+              )}
             />
           </SafeAreaView>
         </View>

@@ -4,16 +4,54 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './src/navigation/stackNavigation';
 import {enableScreens} from 'react-native-screens';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import store from './src/redux/store';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {addCart, clearCart} from './src/redux/cart';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 enableScreens();
 
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'black',
+    accent: 'white',
+  },
+};
 const App = () => {
+  const dispatch = useDispatch();
   const [location, setLocation] = useState({});
   const [countryName, setCountryName] = useState('');
   const [countryCode, setCountryCode] = useState('');
+
+  let i = 0;
+  async function getDataFromStorage() {
+    const stateCartItems = (await AsyncStorage.getItem('state'))
+      ? JSON.parse(await AsyncStorage.getItem('state')).cartItems
+      : [];
+    if (stateCartItems.length > 0) {
+      dispatch(clearCart());
+      for (let i = 0; i < stateCartItems.length; i++) {
+        dispatch(addCart(stateCartItems[i]));
+      }
+    }
+    i++;
+    console.log('Function is Called', i, 'TIMES');
+    stateCartItems &&
+      console.log(stateCartItems, stateCartItems.length, 'FROM STORAGE');
+    const stateTotalPrice = (await AsyncStorage.getItem('state')?.totalPrice)
+      ? JSON.parse(await AsyncStorage.getItem('state')).totalPrice
+      : 0;
+    const stateTotalItems = (await AsyncStorage.getItem('state')?.totalItems)
+      ? JSON.parse(await AsyncStorage.getItem('state')).totalItems
+      : 0;
+    const stateWishlist = (await AsyncStorage.getItem('state')?.wishlist)
+      ? JSON.parse(await AsyncStorage.getItem('state')).wishlist
+      : [];
+  }
+  getDataFromStorage();
   async function turnOnLocation() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -42,8 +80,7 @@ const App = () => {
           .then(response => response.json())
           .then(data => {
             setLocation(data);
-            console.log(data, 'THIS IS THE LOCATION DATAQ');
-            setCountryName(data.country_name);
+            // setCountryName(data.country_name);
             setCountryCode(data.country_code);
           })
           .catch(error => console.error(error, 'error getting location name'));
@@ -55,13 +92,14 @@ const App = () => {
 
   useEffect(() => {
     turnOnLocation();
+    getDataFromStorage();
   }, []);
   return (
-    <Provider store={store}>
+    <PaperProvider theme={theme}>
       <NavigationContainer>
         <AppStack />
       </NavigationContainer>
-    </Provider>
+    </PaperProvider>
   );
 };
 

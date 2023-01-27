@@ -18,6 +18,8 @@ import SwitchiveCard from '../switchiveCards';
 import {cards} from '../../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
+import COLORS from '../../config/constant';
+import Loader from '../Loader';
 
 const controller = new AbortController();
 const {signal} = controller;
@@ -44,7 +46,7 @@ function Switchive() {
     }
   };
   const getSwitchHiveCards = token => {
-    // setLoading(true);
+    setLoading(true);
     cards({
       method: 'GET',
       headers: {
@@ -55,7 +57,6 @@ function Switchive() {
     })
       .then(res => {
         setproducts(res.data.results);
-        console.log(res.data.results);
         setLoading(false);
       })
       .catch(err => {
@@ -80,13 +81,19 @@ function Switchive() {
             shopping, balance top up or gift your loved ones to shop for their
             desired products on the switchive website.
           </Text>
-          <SafeAreaView>
-            <FlatList
-              data={products}
-              keyExtractor={data => data.id}
-              renderItem={({item}) => <SwitchiveCard item={item} />}
-            />
-          </SafeAreaView>
+          {loading ? (
+            <View style={{marginTop: hp(10)}}>
+              <Loader />
+            </View>
+          ) : (
+            <SafeAreaView>
+              <FlatList
+                data={products}
+                keyExtractor={data => data.id}
+                renderItem={({item}) => <SwitchiveCard item={item} />}
+              />
+            </SafeAreaView>
+          )}
         </View>
       </View>
     </View>
@@ -107,13 +114,14 @@ const styles = StyleSheet.create({
     marginBottom: hp('3'),
     color: 'black',
     fontWeight: '500',
-    marginBottom: hp('2'),
+    marginTop: hp('2'),
     textAlign: 'center',
   },
   topuptext1: {
-    fontSize: hp('2.3'),
+    color: '#808080',
+    fontSize: hp('2'),
     marginBottom: hp('3'),
-    fontWeight: '500',
+    fontWeight: '400',
     marginBottom: hp('2'),
     textAlign: 'center',
     paddingHorizontal: wp('4'),

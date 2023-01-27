@@ -7,33 +7,32 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-function GiftsCard(item) {
-  console.log(item.item);
+import CacheImage from '../CacheImage';
+function GiftsCard({item}) {
+  console.log(item);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.bgcolor}
-        onPress={() =>
-          navigation.navigate('GiftCards', {id: item.item.productId})
-        }>
+        onPress={() => navigation.navigate('GiftCards', {id: item.productId})}>
         <TouchableOpacity>
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image source={{uri: item.item?.logoUrls[0]}} style={styles.star} />
+          <CacheImage imageUrl={item?.logoUrls[0]} />
           <View style={styles.marginleft}>
-            <Text style={styles.greycolor}>{item.item?.productName}</Text>
+            <Text style={styles.greycolor}>{item?.productName}</Text>
             <Text
               style={
                 styles.greycolor1
-              }>{`Variation type ${item.item?.denominationType}`}</Text>
-            {item.item?.denominationType === 'FIXED' ? (
-              <Text style={styles.greycolor2}>{`${
-                item.item?.senderCurrencyCode
-              } ${item.item?.fixedRecipientDenominations?.[0]} - ${
-                item.item?.fixedRecipientDenominations?.[
-                  item.item?.fixedRecipientDenominations?.length - 1
+              }>{`Variation type ${item?.denominationType}`}</Text>
+            {item?.denominationType === 'FIXED' ? (
+              <Text style={styles.greycolor2}>{`${item?.senderCurrencyCode} ${
+                item?.fixedRecipientDenominations?.[0]
+              } - ${
+                item?.fixedRecipientDenominations?.[
+                  item?.fixedRecipientDenominations?.length - 1
                 ]
               }`}</Text>
             ) : (
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: hp('2'),
     marginTop: hp('1'),
+    borderRadius: wp('4'),
   },
   icon: {
     color: '#EC2027',

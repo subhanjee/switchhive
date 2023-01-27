@@ -7,25 +7,30 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-function WishListCards({item}) {
+import CacheImage from '../CacheImage';
+function WishListCards({item, onDelete}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.bgcolor22}
-        onPress={() =>
-          navigation.navigate('TopUpCards', {id: item.operatorId})
+        onPress={
+          () => console.log('TO WISHLIST')
+          // navigation.navigate('TopUpCards', {id: item.operatorId})
         }>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onDelete(item)}>
           <Icon name="close" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.pubgcard}>
-          <Image source={PUBG} style={styles.pubg} />
+          {/* <Image source={{uri: item.image}} style={styles.pubg} /> */}
+          <CacheImage imageUrl={item.image} />
           <View style={styles.punbgmarginleft}>
-            <Text style={styles.pubggreycolor}>PUBG Mobile 60 UC PK</Text>
+            <Text style={styles.pubggreycolor}>{item.name}</Text>
           </View>
         </View>
-        <Text style={styles.pubggreycolor1}>$0.99 - $0.99</Text>
+        <Text style={styles.pubggreycolor1}>
+          ${item.minAmount} - ${item.maxAmount}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
   },
   pubgcard: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: hp('1'),
   },
   pubg: {
@@ -62,6 +67,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     fontWeight: '500',
+    width: wp(51),
   },
   pubggreycolor1: {
     color: '#000',

@@ -22,6 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import {authenticationReloadly, crypto, giftcards} from '../../api';
 import Loader from '../../components/Loader';
 import {useDispatch} from 'react-redux';
+import {addItem} from '../../redux/cart';
 
 const countriesWithFlags = [
   {title: 'Egypt'},
@@ -84,8 +85,27 @@ function GiftCardsScreen({route}) {
         setLoading(false);
       });
   };
-
-  // ! CORS ERROR On Local
+  function addToCart() {
+    dispatch(
+      addItem({
+        id: data?.productId,
+        name: data?.productName,
+        logoUrls: data?.logoUrls?.[0],
+        amount: Number(value),
+        totalAmount: Number(value),
+        country: data?.country?.isoName,
+        email: 'talal@gmail.com',
+        phone: '03005645283',
+        instructions: `${
+          data.redeemInstruction.concise + ' ' + data.redeemInstruction.verbose
+        }`,
+        type: 'gift-card',
+      }),
+    );
+    // dispatch(setUSDAmount(value));
+    // dispatch(setCountryCode(data?.country?.isoName));
+    navigation.navigate('Cart');
+  }
   const getCoins = () => {
     crypto({
       method: 'get',
@@ -110,7 +130,6 @@ function GiftCardsScreen({route}) {
         title: obj[key].name,
       };
     });
-    items = arr;
     return arr;
   };
   useEffect(() => {
@@ -249,7 +268,7 @@ function GiftCardsScreen({route}) {
               </View>
             </View>
             <View style={styles.twobtninrow}>
-              <TouchableOpacity style={styles.redbtn}>
+              <TouchableOpacity style={styles.redbtn} onPress={addToCart}>
                 <Text style={styles.whitetext}>Add to Cart</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.whitebtn}>

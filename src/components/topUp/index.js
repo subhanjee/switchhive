@@ -52,6 +52,8 @@ function TopUp() {
       .finally(() => {
         setLoading(false);
       });
+
+    return () => controller.abort();
   };
 
   useEffect(() => {
@@ -93,7 +95,9 @@ function TopUp() {
             Tether, and more.
           </Text>
           {loading ? (
-            <Loader />
+            <View style={{marginTop: hp(10)}}>
+              <Loader />
+            </View>
           ) : (
             <SafeAreaView>
               <FlatList

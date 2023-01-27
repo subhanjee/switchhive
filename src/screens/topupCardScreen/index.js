@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -18,19 +18,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Config from 'react-native-config';
 import {authenticationReloadly, crypto, topup} from '../../api';
 import {useNavigation} from '@react-navigation/native';
-
-const countriesWithFlags = [
-  {title: 'Egypt'},
-  {title: 'Canada'},
-  {title: 'Australia'},
-  {title: 'Ireland'},
-  {title: 'Brazil'},
-  {title: 'England'},
-  {title: 'Dubai'},
-];
+import {useDispatch, useSelector} from 'react-redux';
+import cart, {addItem} from '../../redux/cart';
+import CacheImage from '../../components/CacheImage';
+import Loader from '../../components/Loader';
 
 function TopUpCardsScreen({route}) {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {id} = route.params;
   console.log(id);
   const [loading, setloading] = useState(true);
@@ -49,6 +44,8 @@ function TopUpCardsScreen({route}) {
     price: 1,
   });
   const [coins, setCoins] = useState([]);
+
+  const {cartItems} = useSelector(state => state.cart);
 
   const validatePhone = phone => {
     if (7 <= phone.length && phone.length <= 14) {
@@ -117,7 +114,7 @@ function TopUpCardsScreen({route}) {
         title: obj[key].name,
       };
     });
-    items = arr;
+    // items = arr;
     return arr;
   };
   useEffect(() => {
@@ -167,22 +164,19 @@ function TopUpCardsScreen({route}) {
       getTopUpById(topupToken);
     }
   }, []);
+
+  console.log(cartItems, 'xcart');
   return (
     <View style={styles.container}>
       {loading ? (
-        <Text>loading...</Text>
+        <Loader />
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}>
           <View style={styles.textWrapper22}>
             <View style={styles.imgView}>
-              {data && (
-                <Image
-                  source={{uri: data?.logoUrls[0]}}
-                  style={styles.sizeImage}
-                />
-              )}
+              {data && <CacheImage imageUrl={data?.logoUrls[0]} />}
             </View>
             <Text style={styles.color}>{data?.name}</Text>
             <Text style={styles.color1}>
@@ -205,7 +199,7 @@ function TopUpCardsScreen({route}) {
               <TextInput
                 style={styles.textInput}
                 onChangeText={e => setvalue(e)}
-                value={value}
+                value={String(value)}
                 keyboardType="numeric"
                 maxLength={10} //setting limit of input
               />
@@ -268,23 +262,26 @@ function TopUpCardsScreen({route}) {
           <View style={styles.twobtninrow}>
             <TouchableOpacity
               style={styles.redbtn}
-              onPress={() =>
-                console.log({
-                  id: data?.id,
-                  name: data?.name,
-                  package: packagestatus,
-                  logoUrls: data?.logoUrls?.[1],
-                  amount: Number(value),
-                  totalAmount: Number(value),
-                  localAmount: (value * data?.fx?.rate).toFixed(2),
-                  localCurrency: data?.destinationCurrencyCode,
-                  operatorId: id,
-                  country: data?.country?.isoName,
-                  email: 'talal@gmail.com',
-                  phone: phone,
-                  type: 'topup',
-                })
-              }>
+              onPress={() => {
+                dispatch(
+                  addItem({
+                    id: data?.id,
+                    name: data?.name,
+                    package: packagestatus,
+                    logoUrls: data?.logoUrls?.[1],
+                    amount: Number(value),
+                    totalAmount: Number(value),
+                    localAmount: (value * data?.fx?.rate).toFixed(2),
+                    localCurrency: data?.destinationCurrencyCode,
+                    operatorId: id,
+                    country: data?.country?.isoName,
+                    email: 'talal@gmail.com',
+                    phone: phone,
+                    type: 'topup',
+                  }),
+                );
+                navigation.navigate('Cart');
+              }}>
               <Text style={styles.whitetext}>Add to Cart</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.whitebtn}>
