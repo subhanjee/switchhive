@@ -7,9 +7,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import CacheImage from '../CacheImage';
 function TopUpCard({item}) {
   const navigation = useNavigation();
-  console.log(item?.logoUrls[0]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -21,10 +22,11 @@ function TopUpCard({item}) {
           <Icon name="heart" style={styles.icon} />
         </TouchableOpacity>
         <View style={styles.topupcard}>
-          <Image
+          {/* <Image
             source={{uri: item.logoUrls[0]}}
             style={{width: 100, height: 100, resizeMode: 'contain'}}
-          />
+          /> */}
+          <CacheImage imageUrl={item.logoUrls[0]} />
           <View style={styles.marginleft}>
             <Text style={styles.greycolor}>{item.name}</Text>
             <Text

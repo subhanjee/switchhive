@@ -14,6 +14,7 @@ const App = () => {
   const [location, setLocation] = useState({});
   const [countryName, setCountryName] = useState('');
   const [countryCode, setCountryCode] = useState('');
+
   async function turnOnLocation() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -57,11 +58,9 @@ const App = () => {
     turnOnLocation();
   }, []);
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <AppStack />
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      <AppStack />
+    </NavigationContainer>
   );
 };
 

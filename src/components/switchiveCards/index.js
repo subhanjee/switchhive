@@ -14,27 +14,27 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-function SwitchiveCard(item) {
+import CacheImage from '../CacheImage';
+function SwitchiveCard({item}) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.switchbgcolor}
-        onPress={() =>
-          navigation.navigate('SwitHiveCards', {id: item?.item?.id})
-        }>
+        onPress={() => navigation.navigate('SwitHiveCards', {id: item?.id})}>
         <TouchableOpacity>
           <Icon name="heart" style={styles.switchicon} />
         </TouchableOpacity>
         <View style={styles.switchcard}>
-          <Image source={{uri: item.item?.avatar}} style={styles.star} />
+          {/* <Image source={{uri: item.item?.avatar}} style={styles.star} /> */}
+          <CacheImage imageUrl={item?.avatar} />
           <View style={styles.switchmarginleft}>
-            <Text style={styles.switchgreycolor}>{item.item?.name}</Text>
+            <Text style={styles.switchgreycolor}>{item?.name}</Text>
             <Text style={styles.switchgreycolor2}>{`${
-              item.item?.currency
-            } ${(item.item?.minAmount).toFixed(
+              item?.currency
+            } ${(item?.minAmount).toFixed(2)} - ${(item?.maxAmount).toFixed(
               2,
-            )} - ${(item.item?.maxAmount).toFixed(2)} `}</Text>
+            )} `}</Text>
 
             <Text style={styles.switchredcolor}>Featured</Text>
           </View>
