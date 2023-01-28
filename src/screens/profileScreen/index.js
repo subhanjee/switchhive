@@ -20,10 +20,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 import {users} from '../../api';
 import {setUser} from '../../redux/user';
+import Toast from 'react-native-toast-message';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 import Modal from 'react-native-modal';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Loader from '../../components/Loader';
 // import Profile from '../../assets/images/person-profile-image-icon.webp';
 // import { users, orders, wishlist, redeem, wallet, auth } from "../../api";
 const APPURL =
@@ -39,9 +42,26 @@ function ProfileScreen() {
   const [balance, setBalance] = useState(0);
   const [token, setToken] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
+  const [redeeming, setRedeeming] = useState(false);
   const {user} = useSelector(state => state.user);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  async function storeCoin(coin) {
+    try {
+      await AsyncStorage.setItem('coin', coin);
+    } catch (error) {
+      console.log(error, 'Storing coin failed');
+    }
+  }
+  const copyToClipboard = text => {
+    Toast.show({
+      type: 'success',
+      text1: 'Text copied to clipboard',
+      text2: text,
+      topOffset: 5,
+    });
+    Clipboard.setString(text);
   };
 
   const getToken = async () => {
@@ -66,7 +86,7 @@ function ProfileScreen() {
       .then(res => {
         dispatch(setUser(res.data));
         getCurrencyValue(res.data, currency);
-        console.log(res.data);
+        console.log(res.data, 'GET USER');
       })
       .catch(error => {
         // messageApi.error(error.response.data.message);
@@ -88,12 +108,12 @@ function ProfileScreen() {
     setBalance(data[0]);
   }
 
-  const onSHPRedeem = () => {
+  const updateSHP = () => {
     users(`${user.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token-access')}`,
+        Authorization: `Bearer ${token}`,
       },
       data: {
         loyaltyPoints: 0,
@@ -102,12 +122,26 @@ function ProfileScreen() {
     })
       .then(response => {
         console.log(response.data);
-        getUserByID(user.id, token);
+        getUserByID(token, user.id);
       })
       .catch(error => {
         console.log(error);
       });
   };
+  function onRedeemSHP(coin) {
+    storeCoin(coin);
+    if (addpoints().toFixed(2) > 0) {
+      addBalance(coin);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Not Enough SHP to redeem',
+        text2: 'Buy something to add SHP to your account',
+        topOffset: 5,
+      });
+      toggleModal();
+    }
+  }
 
   const addBalance = coin => {
     const updateBalance = () => {
@@ -133,25 +167,30 @@ function ProfileScreen() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token-access')}`,
+          Authorization: `Bearer ${token}`,
         },
         data: {
           balance: updateBalance(),
         },
       })
         .then(response => {
-          logger(response.data, 'This is ADD Balance response');
+          console.log(response.data, 'This is ADD Balance response');
 
-          onSHPRedeem();
-          message.success('SHP are added successfully are added in USD');
+          updateSHP();
+          // message.success('SHP are added successfully are added in USD');
           // createOrder(data);
         })
         .catch(error => {
-          logger(error);
+          console.log(error);
         })
         .finally(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'SHP are added successfully are added',
+            topOffset: 5,
+          });
           setRedeeming(false);
-          handleBalanceCancel();
+          toggleModal();
         });
     }
   };
@@ -159,7 +198,7 @@ function ProfileScreen() {
   useEffect(() => {
     getToken();
   }, []);
-
+  console.log(token, 'TOKEN');
   return (
     <View style={styles.container}>
       <ScrollView
@@ -168,39 +207,39 @@ function ProfileScreen() {
         <LinearGradient
           colors={['rgba(236, 32, 39, 1)', 'rgba(33, 65, 146, 1)']}
           style={styles.linearGradient}>
+          <View>
+            <SelectDropdown
+              data={countriesWithFlags}
+              onSelect={(selectedItem, index) => {
+                setCurrency(selectedItem.title);
+                getCurrencyValue(user, selectedItem.title);
+              }}
+              defaultButtonText={currency}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem.title;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.title;
+              }}
+              buttonStyle={styles.dropdown4BtnStyle44}
+              buttonTextStyle={styles.dropdown4BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return (
+                  <FontAwesome
+                    name={isOpened ? 'chevron-up' : 'chevron-down'}
+                    color={'white'}
+                    size={10}
+                  />
+                );
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.dropdown4DropdownStyle}
+              rowStyle={styles.dropdown4RowStyle}
+              rowTextStyle={styles.dropdown4RowTxtStyle}
+            />
+            <Text style={styles.greycolor2}>Choose Currency</Text>
+          </View>
           <View style={styles.textWrapper22}>
-            <View>
-              <SelectDropdown
-                data={countriesWithFlags}
-                onSelect={(selectedItem, index) => {
-                  setCurrency(selectedItem.title);
-                  getCurrencyValue(user, selectedItem.title);
-                }}
-                defaultButtonText={currency}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem.title;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item.title;
-                }}
-                buttonStyle={styles.dropdown4BtnStyle44}
-                buttonTextStyle={styles.dropdown4BtnTxtStyle}
-                renderDropdownIcon={isOpened => {
-                  return (
-                    <FontAwesome
-                      name={isOpened ? 'chevron-up' : 'chevron-down'}
-                      color={'white'}
-                      size={10}
-                    />
-                  );
-                }}
-                dropdownIconPosition={'right'}
-                dropdownStyle={styles.dropdown4DropdownStyle}
-                rowStyle={styles.dropdown4RowStyle}
-                rowTextStyle={styles.dropdown4RowTxtStyle}
-              />
-              <Text style={styles.greycolor2}>Choose Currency</Text>
-            </View>
             <View>
               {/* <Image source={Profile} style={styles.profileimg} /> */}
             </View>
@@ -242,22 +281,52 @@ function ProfileScreen() {
             </View>
             <Text style={styles.name1}>Referral Code:</Text>
             <Text style={styles.greycolor1}>
-              {APPURL}/signup/63b7f9221562170d98533ba6
+              {APPURL}/signup/{user?.id}
             </Text>
             <View>
-              <TouchableOpacity style={styles.redbtncopy}>
+              <TouchableOpacity
+                style={styles.redbtncopy}
+                onPress={() => copyToClipboard(`${APPURL}/signup/${user?.id}`)}>
                 <Text style={styles.colorwhite}>Copy Referral Link</Text>
               </TouchableOpacity>
             </View>
           </View>
+          <Toast />
         </LinearGradient>
       </ScrollView>
       <Modal isVisible={isModalVisible}>
-        <View style={styles.container22}>
-          <TouchableOpacity onPress={toggleModal} style={styles.modelbtn23}>
-            <Text style={styles.greycolor1}>Close</Text>
-          </TouchableOpacity>
-        </View>
+        {redeeming ? (
+          <View>
+            <Loader />
+          </View>
+        ) : (
+          <View style={styles.container22}>
+            {user?.balance?.map(currency => {
+              return Object.entries(currency).map(([key, value]) => {
+                return (
+                  <TouchableOpacity onPress={() => onRedeemSHP(key)}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        backgroundColor: 'red',
+                        paddingVertical: hp(3),
+                        borderRadius: wp(3),
+                        marginTop: hp(1),
+                      }}>
+                      <Text>{key + ' ' + value.toFixed(3)}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              });
+            })}
+
+            <TouchableOpacity onPress={toggleModal} style={styles.modelbtn23}>
+              <Text style={styles.textBlack}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </Modal>
     </View>
   );
@@ -270,6 +339,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('4'),
     paddingVertical: hp('1'),
     backgroundColor: 'white',
+    borderRadius: wp(1),
   },
   linearGradient: {
     paddingHorizontal: wp('2'),
@@ -296,6 +366,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  modelbtn23: {
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: wp('5'),
+    paddingRight: wp('5'),
+    paddingTop: hp('1'),
+    paddingBottom: hp('1'),
+    alignSelf: 'flex-end',
+    marginTop: hp('3'),
+    marginBottom: hp('3'),
+    borderRadius: 3,
+  },
+  textBlack: {
+    color: COLORS.BLACK,
   },
   name: {
     fontSize: hp('3'),
