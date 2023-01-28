@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,13 +15,114 @@ import data from '../../helper/data.json';
 import WalletCards from '../walletCards';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import {giftcards, authenticationReloadly, redeem, wallet} from '../../api';
+import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const countriesWithFlags = [
   {title: '1 Week'},
   {title: ' Month'},
   {title: 'Off'},
 ];
+
 function Wallet() {
+  const [redeemables, setRedeemables] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [walletData, setWalletData] = useState([]);
+
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token_access');
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+      console.log(user.id, 'uswreorder');
+      console.log(token, 'TOKEN');
+      // getWallets(token, user.id);
+      getRedeemables(token, user.id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // const getWallets = (token, id) => {
+  //   // setLoading(true);
+  //   wallet({
+  //     method: 'get',
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     params: {
+  //       createdBy: id,
+  //     },
+  //   })
+  //     .then(res => {
+  //       // logger(res.data, "data");
+  //       setWalletData(res.data.results);
+  //       console.log(res.data.results);
+  //     })
+  //     .catch(error => {
+  //       // logger(error.response.data.message);
+  //       // logger(error);
+  //       console.log(error);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
+  // const deleteWalletItem = id => {
+  //   wallet(`${id}`, {
+  //     method: 'Delete',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${localStorage.getItem('token-access')}`,
+  //     },
+  //   })
+  //     .then(res => {
+  //       console.log(res.data, 'REMOVE ');
+  //       getWallets();
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+
+  const getRedeemables = (token, id) => {
+    // setLoading(true);
+    redeem('/ByCard', {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        createdBy: id,
+        limit: 100,
+      },
+    })
+      .then(res => {
+        // logger(res.data, "data");
+        setRedeemables(res.data.results);
+        console.log(res.data.results);
+      })
+      .catch(error => {
+        //logger(error.response.data.message);
+        // logger(error);
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  // const checkDeleteDay = (itemDate) => {
+  //   const date = parseISO(itemDate);
+  //   const newDate = add(date, { days: delelteInDays });
+  //   if (isBefore(newDate, new Date())) {
+  //     onDelete(id);
+  //     console.log(isBefore(newDate, new Date()));
+  //     console.log(newDate, "new Date New");
+  //   }
+  //   console.log(newDate, "new Date New");
+  // };
+
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
@@ -61,7 +162,7 @@ function Wallet() {
           </View>
           <SafeAreaView>
             <FlatList
-              data={data}
+              data={redeemables}
               keyExtractor={data => data.id}
               renderItem={({item}) => <WalletCards item={item} />}
             />

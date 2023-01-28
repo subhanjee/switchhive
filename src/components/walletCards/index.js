@@ -13,6 +13,59 @@ function WalletCards({item}) {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  // const getProductById = (token) => {
+  //   giftcards(`products/${productId}`, {
+  //     method: "GET",
+
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       logger(res.data, "Data");
+  //       setData(res.data);
+  //     })
+  //     .catch((err) => {
+  //       // message.error("Gift Card get failed");
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       setDeleteCheck(true);
+  //       setLoading(false);
+  //     });
+  // };
+  // useEffect(() => {
+  //   setLoading(true);
+
+  //     let values = {
+  //       client_id: Config.REACT_APP_RELOADLY_CLIENT_ID,
+  //       client_secret: Config.REACT_APP_RELOADLY_API_CLIENT_SECRET,
+  //       grant_type: "client_credentials",
+  //       audience: Config.REACT_APP_GIFTCARD_RELOADLY,
+  //     };
+
+  //     authenticationReloadly({
+  //       method: "post",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //       },
+  //       data: values,
+  //     })
+  //       .then((res) => {
+  //         getProductById(res.data.access_token);
+  //         console.log(res.data.access_token);
+  //         // dispatch(setgiftcardToken(res.data.access_token));
+  //       })
+  //       .catch((error) => {
+  //         //   message.error("Token Expire");
+  //         // logger(error);
+  //         console.log(error);
+  //       });
+
+  // }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -21,23 +74,29 @@ function WalletCards({item}) {
           navigation.navigate('TopUpCards', {id: item.operatorId})
         }>
         <View style={styles.pubgcard}>
-          <Image source={PUBG} style={styles.pubg} />
+          <Image source={{uri: item.card[0].avatar}} style={styles.pubg} />
           <View style={styles.punbgmarginleft}>
             <View style={styles.rowwalletcards}>
               <Text style={styles.walletgreycolor}>Name:</Text>
-              <Text style={styles.walletgreycolor1}>Euro Card</Text>
+              <Text style={styles.walletgreycolor1}>{item.card[0].name}</Text>
             </View>
             <View style={styles.rowwalletcards}>
               <Text style={styles.walletgreycolor}>Transaction Id:</Text>
-              <Text style={styles.walletgreycolor1}>paid with balance:</Text>
+              <Text style={styles.walletgreycolor1}>{item.transactionId}</Text>
             </View>
             <View style={styles.rowwalletcards}>
               <Text style={styles.walletgreycolor}>purchase Amount:</Text>
-              <Text style={styles.walletgreycolor1}>2 EUR</Text>
+              <Text style={styles.walletgreycolor1}>
+                {' '}
+                {item.purchaseAmount} {item.currency}
+              </Text>
             </View>
             <View style={styles.rowwalletcards}>
               <Text style={styles.walletgreycolor}>Paid Amount :</Text>
-              <Text style={styles.walletgreycolor1}>2.17 USD</Text>
+              <Text style={styles.walletgreycolor1}>
+                {' '}
+                {item.paidAmount.toFixed(2)} USD
+              </Text>
             </View>
           </View>
         </View>

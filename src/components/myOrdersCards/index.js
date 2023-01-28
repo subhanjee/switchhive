@@ -7,7 +7,7 @@ import {
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
-function MyOrderCards({item}) {
+function MyOrderCards({item, onDelete}) {
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -16,20 +16,18 @@ function MyOrderCards({item}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.orderbgcolor22}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onDelete(item)}>
           <Icon name="delete" style={styles.ordericon} />
         </TouchableOpacity>
         <View style={styles.ordercard}>
           <View style={styles.ordermarginleft}>
             <View style={styles.orderrow}>
               <Text style={styles.ordergreycolor}>Transaction Id:</Text>
-              <Text style={styles.ordergreycolor1}>
-                63b82f2ecbf37e3a1008368e
-              </Text>
+              <Text style={styles.ordergreycolor1}>{item.transactionId}</Text>
             </View>
             <View style={styles.orderrow}>
               <Text style={styles.ordergreycolor}>Amount:</Text>
-              <Text style={styles.ordergreycolor1}>1.19 USD</Text>
+              <Text style={styles.ordergreycolor1}>{item.amount} USD</Text>
             </View>
           </View>
         </View>
@@ -42,11 +40,11 @@ function MyOrderCards({item}) {
           <Text style={styles.detailsmodal}>Details</Text>
           <View style={styles.procard}>
             <Text style={styles.ordergreycolor}>Order Email:</Text>
-            <Text style={styles.ordergreycolor1}>talal@gmail.com</Text>
+            <Text style={styles.ordergreycolor1}>{item.orderEmail}</Text>
           </View>
           <View style={styles.procard}>
             <Text style={styles.ordergreycolor}>Paid Coin:</Text>
-            <Text style={styles.ordergreycolor1}>TCN</Text>
+            <Text style={styles.ordergreycolor1}>{item.paidCoin}</Text>
           </View>
           <View style={styles.procard}>
             <Text style={styles.ordergreycolor}>Products:</Text>
@@ -54,7 +52,9 @@ function MyOrderCards({item}) {
           </View>
           <View style={styles.procard}>
             <Text style={styles.ordergreycolor}>Date:</Text>
-            <Text style={styles.ordergreycolor1}>2023-01-06</Text>
+            <Text style={styles.ordergreycolor1}>
+              {item.createdAt.split('T')[0]}
+            </Text>
           </View>
           <TouchableOpacity onPress={toggleModal} style={styles.modelbtn23}>
             <Text style={styles.greycolor1}>Close</Text>
