@@ -83,8 +83,10 @@ const cartSlice = createSlice({
       // Number(state.totalPrice).toFixed(2);
 
       state.totalItems = state.totalItems + 1;
+      console.log(state, 'OUTSTIER');
       try {
         AsyncStorage.setItem('state', JSON.stringify(state));
+        console.log(state, 'stored');
       } catch (err) {
         console.log(err);
       }
@@ -178,12 +180,10 @@ const cartSlice = createSlice({
       }
     },
     cartReset(state, action) {
-      const {cartItems, totalItems, totalPrice} = JSON.parse(
-        AsyncStorage.getItem('state'),
-      );
-      state.cartItems = cartItems;
-      state.totalItems = totalItems;
-      state.totalPrice = totalPrice;
+      const {cartItems, totalItems, totalPrice} = [];
+      state.cartItems = [];
+      state.totalItems = 0;
+      state.totalPrice = 0;
     },
     addWishlist(state, action) {
       state.wishlist.push(action.payload);

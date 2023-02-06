@@ -12,38 +12,39 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useSelector} from 'react-redux';
-import {users} from '../../api';
+import {useDispatch, useSelector} from 'react-redux';
+import {redeem, users} from '../../api';
 import {setUser} from '../../redux/user';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import Loader from '../Loader';
+import COLORS from '../../config/constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function RedeemCoupon({item}) {
+  const dispatch = useDispatch();
   const {user} = useSelector(state => state.user);
   const navigation = useNavigation();
   const [token, setToken] = useState('');
   const [code, setCode] = useState();
   const [loading, setLoading] = useState(true);
   const [redeeming, setRedeeming] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const [userData, setUserData] = useState();
 
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token_access');
       const user = JSON.parse(await AsyncStorage.getItem('user'));
       console.log(user.id, 'uswreorder');
-      getUserByID(token, user.id);
+      getUserByID(token, user?.id);
+      setUserData(user);
       setToken(token);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const removeRedeemCard = id => {
-    redeem(`${id}`, {
+  const removeRedeemCard = () => {
+    redeem(`${code}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -72,6 +73,7 @@ function RedeemCoupon({item}) {
       });
   };
   const addBalance = data => {
+    setRedeeming(true);
     const updateBalance = () => {
       let arr = [...user.balance];
       console.log(arr);
@@ -85,27 +87,25 @@ function RedeemCoupon({item}) {
       });
       return arr;
     };
-    if (user.id) {
-      setRedeeming(true);
-      users(`${user.id}`, {
+    if (userData) {
+      users(`${userData.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token-access')}`,
+          Authorization: `Bearer ${token}`,
         },
         data: {
           balance: updateBalance(),
         },
       })
         .then(response => {
-          logger(response.data, 'This is ADD Balance response');
+          console.log(response.data, 'This is ADD Balance response');
           console.log(code, 'ID');
-          getUser();
-          message.success('Coupon is added successfully');
+          // getUser();
           // createOrder(data);
         })
         .catch(error => {
-          logger(error);
+          console.log(error);
         })
         .finally(() => {
           setRedeeming(false);
@@ -143,7 +143,7 @@ function RedeemCoupon({item}) {
         <Loader />
       ) : (
         <View style={styles.ReedemWrapper22}>
-          <TouchableOpacity style={styles.Redeembgcolor22}>
+          <View style={styles.Redeembgcolor22}>
             <View style={styles.Redeemcard}>
               <View style={styles.Redeemmarginleft}>
                 <Text style={styles.Redeemgreycolor}>Redeem Coupon</Text>
@@ -164,10 +164,15 @@ function RedeemCoupon({item}) {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.bgbtnred} onPress={toggleModal}>
-              <Text style={styles.redbtntext}>Redeem</Text>
+            <TouchableOpacity
+              disabled={redeeming}
+              style={styles.bgbtnred}
+              onPress={removeRedeemCard}>
+              <Text style={styles.redbtntext}>
+                {redeeming ? 'Redeeming...' : 'Redeem'}
+              </Text>
             </TouchableOpacity>
-          </TouchableOpacity>
+          </View>
         </View>
       )}
       <Toast />
@@ -238,6 +243,7 @@ const styles = StyleSheet.create({
     marginTop: hp('1'),
     width: wp('86%'),
     borderRadius: 3,
+    color: COLORS.BLACK,
   },
 });
 export default RedeemCoupon;

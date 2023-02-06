@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -9,25 +9,99 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
+  PermissionsAndroid,
   FlatList,
+  Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-// import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker, {
+  launchCamera,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 function Setting() {
   const navigation = useNavigation();
+  const [imageLoading, setImageLoading] = useState(false);
+  const [url, setUrl] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+  const pickImage = async () => {
+    const result = await launchImageLibrary({
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    });
+
+    if (!result.cancelled) {
+      setAvatar(result.assets[0].uri);
+      console.log(result.assets[0].uri);
+    }
+  };
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Camera Permission',
+          message: 'App needs access to your camera',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        pickImage();
+      } else {
+        setHasCameraPermission(false);
+        console.log('first');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // const handleImageChange = async image => {
+  //   setImageLoading(true);
+  //   const avatarDocument = firebase.storage().ref(`images/${user.name}`);
+  //   const response = await fetch(image.uri);
+  //   const blob = await response.blob();
+  //   const uploadTask = avatarDocument.put(blob);
+
+  //   uploadTask
+  //     .then(() => {
+  //       avatarDocument
+  //         .getDownloadURL()
+  //         .then(Url => {
+  //           setUrl(Url);
+  //         })
+  //         .catch(error => {
+  //           console.log(error.message, 'error getting the avatar url');
+  //         });
+  //     })
+  //     .catch(error => {
+  //       console.log(error.message);
+  //     })
+  //     .finally(() => {
+  //       setImageLoading(false);
+  //     });
+
+  //   uploadTask.on('state_changed', snapshot => {
+  //     const percent = Math.round(
+  //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+  //     );
+  //   });
+  // };
   return (
     <View style={styles.container}>
       <View style={styles.textWrapper22}>
         <View>
           <Text style={styles.Settingtext}>Avatar</Text>
-          <View style={styles.btntworow}>
-            <TouchableOpacity style={styles.btnimagepick}>
-              <Text style={styles.picktext}>Image Pick</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnimagepick}>
-              <Text style={styles.picktext}>Image Pick</Text>
-            </TouchableOpacity>
-          </View>
+          {/* <View style={styles.btntworow}> */}
+
+          <TouchableOpacity
+            style={styles.btnimagepick}
+            onPress={requestCameraPermission}>
+            <Text style={styles.picktext}>Image Pick</Text>
+          </TouchableOpacity>
+          {/* </View> */}
+          {imageLoading && <Text>Loading...</Text>}
           <TouchableOpacity style={styles.btnimagepick1}>
             <Text style={styles.picktext}>Change Password</Text>
           </TouchableOpacity>
