@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
+import Clipboard from '@react-native-clipboard/clipboard';
 function WalletCards({item}) {
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -66,6 +67,10 @@ function WalletCards({item}) {
   //       });
 
   // }, []);
+
+  const copyRedeemCode = code => {
+    Clipboard.setString(code);
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -104,7 +109,9 @@ function WalletCards({item}) {
           <TouchableOpacity style={styles.bgbtnred}>
             <Text style={styles.redbtntext}>Copy Coupon Link</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.bgbtnred}>
+          <TouchableOpacity
+            style={styles.bgbtnred}
+            onPress={() => copyRedeemCode(item?._id)}>
             <Text style={styles.redbtntext}>Copy RedeemCodelink</Text>
           </TouchableOpacity>
         </View>
