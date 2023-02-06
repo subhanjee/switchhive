@@ -66,7 +66,7 @@ function MyOrder() {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token-access')}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => {
@@ -89,7 +89,9 @@ function MyOrder() {
             <FlatList
               data={data}
               keyExtractor={data => data.id}
-              renderItem={({item}) => <MyOrderCards item={item} />}
+              renderItem={({item}) => (
+                <MyOrderCards onDelete={removeOrder} item={item} />
+              )}
             />
           </SafeAreaView>
         </View>

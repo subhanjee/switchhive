@@ -13,6 +13,7 @@ import Wallet from '../../components/wallet';
 import RedeemCoupon from '../../components/redeemCoupon';
 import MyReferrals from '../../components/myReferrals';
 import SettingScreen from '../../screens/settingScreen';
+import CartScreen from '../../screens/CartScreen';
 const {width} = Dimensions.get('screen');
 
 const Drawer = createDrawerNavigator();
@@ -76,6 +77,15 @@ export default function AppStack(props) {
       <Drawer.Screen
         name="Promotions"
         component={Promotions}
+        options={
+          {
+            // headerShown: false,
+          }
+        }
+      />
+      <Drawer.Screen
+        name="Cart"
+        component={CartScreen}
         options={
           {
             // headerShown: false,
